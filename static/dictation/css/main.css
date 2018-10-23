@@ -10,10 +10,22 @@ body{
     right:0;
     top:0;
     bottom:0;
-    background-color: grey;
+    background-color: lightblue;
 }
 
-.header_cont{
-    height:50px;
-    background-color: aliceblue;
+.header_part{
+    height:40px;
+    background-color: RGB(103,179,255);
+    coltr:red;
 }
+
+.center_part{
+
+    position: absolute;
+    left:0;
+    top:40px;
+    right:0;
+    bottom:40px;
+    color:red;
+}
+
