@@ -17,6 +17,8 @@ body{
     height:40px;
     background-color: RGB(103,179,255);
     coltr:red;
+    text-align:center;
+    line-height:40px;
 }
 
 .center_part{
@@ -29,3 +31,18 @@ body{
     color:red;
 }
 
+.footer_part {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    color: red;
+}
+
+#next{
+    float:right;
+}
+
+#dictype{
+    float:left;
+
+}
