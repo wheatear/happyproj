@@ -2,29 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>开心听写</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/dictation/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <style type="text/css">
-
-
-    </style>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/static/dictation/js/jquery-3.3.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="/static/dictation/js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>
-    <title>Title</title>
-
 
 </head>
 <body>
     <div class="main_cont clearfix">
         <div class="header_part">
             <button id="dictype">生词</button>
-            <label>选择课文</label>
+            <span>选择课文</span>
             <button id="next">下一步</button>
         </div>
         <div class="center_part">
@@ -47,7 +42,7 @@
                 </select>
             </div>
             <div>
-                <label>课文</label>
+                <span>课文</span>
                 <ul>
                     <li value ="第1课">第1课</li>
                     <li value ="第2课">第2课</li>
@@ -55,10 +50,20 @@
                     <li value ="第4课">第4课</li>
                 </ul>
             </div>
-        </select>
+            <div>
+                <label>词语</label>
+                <select>
+                    <option value ="前30">前30</option>
+                    <option value ="前50">前50</option>
+                </select>
+            </div>
+
         </div>
-        <div class="footer_part">
-footer
+        <div class="footer_part clearfix">
+            <div><button id="create">创建</button></div>
+            <div><button id="dictation">听写</button></div>
+            <div><button id="dictation1">听写</button></div>
+            <div><button id="record">记录</button></div>
         </div>
 
     </div>
