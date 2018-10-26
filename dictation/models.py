@@ -31,3 +31,16 @@ class Lesson(models.Model):
     unit=models.ForeignKey(Unit, on_delete=models.CASCADE,db_column='unitid')
     class Meta:
         db_table='lw_lesson'
+
+class Word(models.Model):
+    id=models.AutoField(primary_key=True)
+    word=models.CharField(max_length=20)
+    lesson=models.ForeignKey(Lesson,None,db_column='lessonid')
+    class Meta:
+        db_table='lw_word'
+
+class ChoiceSelected(models.Model):
+    choicename=models.CharField(max_length=20)
+    choicevalue=models.CharField(max_length=100)
+    class Meta:
+        db_table='lw_choiceselected'

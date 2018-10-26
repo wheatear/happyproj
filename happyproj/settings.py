@@ -25,7 +25,7 @@ SECRET_KEY = 'bzm#r%a6qds-!vbm(y90f%-fl&(+%g=72aer2=4==0m6!40_9_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.32','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.1.32','127.0.0.1','10.4.8.79']
 
 
 # Application definition
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'happyproj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'lessonwords.db'),
     }
 }
 
