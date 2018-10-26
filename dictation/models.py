@@ -4,23 +4,22 @@ from django.db import models
 
 class Press(models.Model):
     id=models.AutoField(primary_key=True,db_column='pressid')
-    pname=models.CharField(max_length=50)
+    name=models.CharField(max_length=50,db_column='pname')
     class Meta:
         db_table='lw_press'
 
 class Book(models.Model):
     id=models.AutoField(primary_key=True,db_column='bookid')
-    bookname=models.CharField(max_length=100)
-    grade=models.CharField(max_length=20)
+    bookname=models.CharField(max_length=100,db_column='bookname')
+    name=models.CharField(max_length=20,db_column='grade')
     press=models.ForeignKey('Press',models.CASCADE, db_column='pressid')
     class Meta:
         db_table='lw_book'
 
 class Unit(models.Model):
     id=models.AutoField(primary_key=True, db_column='unitid')
-    unitname=models.CharField(max_length=50)
+    name=models.CharField(max_length=50,db_column='unitname')
     book=models.ForeignKey('Book',on_delete=models.CASCADE,db_column='bookid')
-
     class Meta:
         db_table='lw_unit'
 

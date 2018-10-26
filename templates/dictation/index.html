@@ -10,14 +10,53 @@
     <link rel="stylesheet" href="/static/dictation/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="/static/dictation/js/jquery-3.3.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="/static/dictation/js/jquery-3.3.1.min.js"></script>
     <script src="/static/dictation/js/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
-    <script type="text/javascript" src="/static/dictation/js/index.js"></script>
+{#    <script type="text/javascript" src="/static/dictation/js/index.js"></script>#}
+    <script type="text/javascript">
+        $(function(){
+            alert('ajax getting');
+            $.get('initQry', function(dic){
+                aChoiceSelected = dic.choiceSelected;
+                alert('ajax get ok');
+                aPress = dic.press;
+                hPress = $('#press');
+                hBook = $('#book');
+                hUnit = $('#unit');
+                hLesson = $('#lesson');
+                fillSele(aPress,hPress);
+                // hNet = $('#ne');
+                // hRes = $('#result');
+            });
+        });
+
+        //fill select
+        function fillSelect(aNames,hSele){
+                hSele.empty();
+                $.each(aNames, function(i,dName){
+                    //fill head
+                    code = dName['id'];
+                    dispName = dName['name'];
+                    hSele.append('<option value='+code+'>'+dispName+'</option>');
+                });
+        }
+
+        //fill ul
+        function fillUl(aNames,hUl){
+                hUl.empty();
+                $.each(aNames, function(i,dName){
+                    //fill head
+                    code = dName['id'];
+                    dispName = dName['name'];
+                    hUl.append('<li value='+code+'>'+dispName+'</li>');
+                });
+        }
+    </script>
 
 </head>
 <body>
@@ -31,25 +70,25 @@
             <form>
             <div class="form-group">
                 <label>出版社</label>
-                <select class="form-control">
+                <select class="form-control" name="press" id="press">
                     <option value ="人民教育出版社">人民教育出版社</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>课本</label>
-                <select class="form-control">
+                <select class="form-control" name="book" id="book">
                     <option value ="五年级 上册">五年级 上册</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>单元</label>
-                <select class="form-control">
+                <select class="form-control" name="unit" id="unit">
                     <option value ="1单元">1单元</option>
                 </select>
             </div>
             <div class="form-group">
                 <span>课文</span>
-                <ul class="form-control">
+                <ul class="form-control" name="lesson" id="lesson">
                     <li value ="第1课">第1课</li>
                     <li value ="第2课">第2课</li>
                     <li value ="第3课">第3课</li>

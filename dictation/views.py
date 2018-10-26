@@ -11,8 +11,10 @@ def index(request):
 
 def initQry(request):
     choiceSelected = dictation.models.ChoiceSelected.objects.all()
-    dChSelected = {'choiceSelected':choiceSelected}
-    return JsonResponse({"result": dChSelected})
+    dRes = {'choiceSelected':choiceSelected}
+    press = dictation.models.Press.objects.all()
+    dRes['press'] = press
+    return JsonResponse(dRes)
 
 def lesson(request):
     return render(request,'dictation/index.html')
