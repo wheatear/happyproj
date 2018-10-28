@@ -49,12 +49,14 @@ body{
     right:0;
     bottom:40px;
     color:red;
+    overflow:auto;
 }
 
 ul{
     list-style: none;
     padding:0;
 }
+
 .footer_part {
     height:40px;
     position: absolute;

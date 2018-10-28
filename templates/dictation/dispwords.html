@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开心听写</title>
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/dictation/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/static/dictation/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/dictation/js/popper.min.js" ></script>
+    <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- player JS -->
+    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/static/dictation/css/dispwords.css">
+    <script type="text/javascript" src="/static/dictation/js/dispwords.js"></script>
+</head>
+<body>
+    <div class="main_cont clearfix">
+        <div class="header_part">
+            <button class="btn btn-primary" id="dictype">生词</button>
+            <span>选择词语</span>
+            <a class="btn btn-default" id="next" href="/dictation/dictating/">下一步</a>
+        </div>
+        <div class="center_part">
+
+            <div  id="words">
+
+                <div class="word un" code="1">词语1</div>
+                <div class="word un" code="2">词语2</div>
+
+            </div>
+
+
+        </div>
+        <div class="footer_part clearfix">
+            <div><button id="create">创建</button></div>
+            <div><button id="dictation">听写</button></div>
+            <div><button id="dictation1">听写</button></div>
+            <div><button id="record">记录</button></div>
+        </div>
+
+    </div>
+</body>
+</html>

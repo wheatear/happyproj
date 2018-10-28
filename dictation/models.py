@@ -41,5 +41,6 @@ class Word(models.Model):
 class ChoiceSelected(models.Model):
     choicename=models.CharField(max_length=20)
     choicevalue=models.CharField(max_length=100)
+    choicecode = models.IntegerField()
     class Meta:
         db_table='lw_choiceselected'
