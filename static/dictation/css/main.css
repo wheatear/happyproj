@@ -42,7 +42,6 @@ body{
 
 
 .center_part{
-
     position: absolute;
     left:0;
     top:40px;
@@ -73,26 +72,23 @@ ul{
     width:25%;
 }
 
-#create{
-
+.footbtn{
     font-size:16px;
     margin:4px auto 0;
 }
+#create{
+    /*font-size:16px;*/
+    /*margin:4px auto 0;*/
+}
 
 #dictation{
-    font-size:16px;
-    margin:4px auto 0;
 
 }
 
 #dictation1{
-    font-size:16px;
-    margin:4px auto 0;
 
 }
 
 #record{
 
-    font-size:16px;
-    margin:4px auto 0;
 }

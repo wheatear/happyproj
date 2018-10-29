@@ -18,6 +18,7 @@
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/dispwords.css">
+    <link rel="stylesheet" type="text/css" href="/static/dictation/css/dictating.css">
     <script type="text/javascript" src="/static/dictation/js/dictating.js"></script>
 </head>
 <body>
@@ -33,16 +34,19 @@
 
             </div>
             <div id="playercontainer"></div>
-            <div><button type="button" id="toPlay">听写</button>
-        <button type="button" id="next">下一个</button>
-        <button type="button" id="previous">上一个</button>
-    </div>
+            <div class="playerpanel clearfix">
+                <div><button type="button" class="playerbutton" id="toPlay">开始听写</button></div>
+                <div><button type="button" class="playerbutton" id="nextWord">下一个</button></div>
+                <div><button type="button" class="playerbutton" id="prevWord">上一个</button></div>
+                <div><button type="button" class="playerbutton" id="pause">暂停/恢复</button></div>
+                <div><button type="button" class="playerbutton" id="stop">结束听写</button></div>
+            </div>
         </div>
         <div class="footer_part clearfix">
-            <div><button id="create">创建</button></div>
-            <div><button id="dictation">听写</button></div>
-            <div><button id="dictation1">听写</button></div>
-            <div><button id="record">记录</button></div>
+            <div><button class="footbtn" id="create">创建</button></div>
+            <div><button class="footbtn" id="dictation">听写</button></div>
+            <div><button class="footbtn" id="dictation1">听写</button></div>
+            <div><button class="footbtn" id="record">记录</button></div>
         </div>
 
     </div>

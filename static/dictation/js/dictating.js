@@ -1,12 +1,17 @@
 
 var aWords=[];
-var aPlayList=[]
+var aPlayList=[];
+var player;
+var indx=0;
+var playState=1;   //0: paused   1:playing   2:stop
+
 $(function(){
     $.get('/dictation/qryVoice/', function(dic){
 		aWords = dic.words;
 		alert(aWords);
 		hWords = $('#words');
-		fillWords(aWords,hWords);
+		makePlayList(aWords,hWords);
+		alert(aPlayList);
     });
 
     $('.word').click(function(){
@@ -15,8 +20,8 @@ $(function(){
         $(this).toggleClass("se");
     });
 
-    alert(aPlayList);
-    var player = cyberplayer("playercontainer").setup({
+    //player set
+    player = cyberplayer("playercontainer").setup({
                 width: 0,   //680, // 宽度，也可以支持百分比(不过父元素宽度要有)
                 height: 0,  //448, // 高度，也可以支持百分比
                 title: "基本功能", // 标题
@@ -44,48 +49,81 @@ $(function(){
                     file: "./img/logo.png" // 图片地址
                 },
                 ak: "xxxxxxxxxxxxxxxx" // 公有云平台注册即可获得accessKey
-            });
+    });
 
-            $('#toPlay').click(function(){
-            var item = player.playlistItem(2);
+    $('#toPlay').click(function(){
+        len = aWords.length;
+        hWords = $('#words');
+        for(indx;indx<len;indx++) {
+            i = indx
+            player.playlistItem(i);
+            wd = aWords[i];
+            code = wd[0];
+            dispName = wd[2];
+            hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
+            $('.word').click(function(){
+                $(this).toggleClass("se");
+            });
+            player.playlistItem(i);
+        }
+            // var item = player.playlistItem(2);
             //player.stop()
             //player.playlistNext();
-            });
+    });
 
-            $('#next').click(function(){
-            var item = player.playlistNext();
+    function playOne(){
+
+    }
+
+    $('#nextWord').click(function(){
+        indx++;
             //player.stop()
             //player.playlistNext();
-            });
+    });
 
-            $('#previous').click(function(){
-            var item = player.playlistPrev();
+    $('#prevWord').click(function(){
+        indx--;
             //player.stop()
             //player.playlistNext();
-            });
+    });
 
-            player.onPlaylistItem(function(event){
+    $('#pause').click(function(){
+        // var state = myPlayer.getState(); //state：{“playing”,“paused”,“idle”,“buffering”}
+        if(playState==0) {
+            playState = 1;
+        } else if(playState==1) {
+            playState = 0;
+        }
+    });
+
+    $('#stop').click(function(){
+        playState = 2;
+            //player.stop()
+            //player.playlistNext();
+    });
+
+    player.onPlaylistItem(function(event){
                 //alert("onPlaylistItem");
                player.stop()
-            });
+    });
 });
 
-function fillWords(aWords,hWords){
+function makePlayList(aWords){
     // hWords.empty();
     $.each(aWords, function(i,aWd){
-        var code = aWd[0];
-        // alert(aWd);
-        var dispName = aWd[2];
-        var voiceFile = '/static/dictation/voice/' + aWd[3];
-        aPlayList.append({sources: [{file: voiceFile}],})
+        var code = aWd[0];          //word id
+        var word = aWd[1];          //word
+        var pinyin = aWd[2];        //pinyin
+        var voicefile = aWd[3];     //voice file
+        var dispName = pinyin;
+        var voiceFile = '/static/dictation/voice/' + voicefile;
+        aPlayList.append({sources: [{file: voiceFile}],});
         // hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
         if(i > 5){
             return
         }
     });
 
-    $('.word').click(function(){
-        $(this).toggleClass("se");
-    })
+
 }
 
