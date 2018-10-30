@@ -9,7 +9,7 @@ $(function(){
                 aBook = dic.book;
                 aUnit = dic.unit;
                 aLesson = dic.lesson;
-                alert(aLesson)
+                // alert(aLesson)
                 hPress = $('#press');
                 hBook = $('#book');
                 hUnit = $('#unit');
@@ -27,12 +27,12 @@ $(function(){
                 hLesson.empty();
                 unitCode = $(this).val();
                 aLesson.push(unitCode);
-                alert(aLesson);
+                // alert(aLesson);
                 qry = 'qryLesson/?unit='+unitCode;
                 alert(qry);
                 $.get(qry,function(dic){
                     aLesson = dic.lesson;
-                    alert(aLesson);
+                    // alert(aLesson);
                     fillRadio(aLesson,hLesson,'None');
                 })
             });
