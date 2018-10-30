@@ -38,7 +38,7 @@ $(function(){
             });
 
             $('#next').click(function(){
-                alert('submit');
+                // alert('submit');
                 hSubmit=$('#submit');
                 hSubmit.trigger("click");
             })

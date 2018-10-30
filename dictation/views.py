@@ -78,8 +78,9 @@ def qryLesson(request):
     return JsonResponse(dRes)
 
 def dispWords(request):
-    lessonId = request.GET['lesson']
-    request.session['lessionId'] = lessonId
+    lessonId = request.GET.get('lesson',None)
+    if lessonId:
+        request.session['lessionId'] = lessonId
     return render(request, 'dictation/dispwords.html')
 
 def qryWords(request):

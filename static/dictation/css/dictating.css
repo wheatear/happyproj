@@ -1,4 +1,5 @@
 
+
 .playerpanel{
     position:absolute;
     left:0;
@@ -21,3 +22,15 @@
     margin:4px auto 0;
 }
 
+#play{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:40px;
+    height:80px;
+    text-align:center;
+}
+
+.cy{
+    margin:0 auto 0;
+}
