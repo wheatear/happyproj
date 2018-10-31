@@ -5,7 +5,7 @@ var player;
 var indx=0;
 var playState=1;   //0: paused   1:playing   2:stop
 var repeat=0;
-
+var wordNum=2;
 var hWords;
 
 $(function(){
@@ -56,7 +56,8 @@ $(function(){
         });
 
         ply.onComplete(function(event){
-            sleep(2000);
+            slpTime=6000*wordNum;
+            sleep(slpTime);
             // ply.pause();
             // setTimeout("playGo()",2000);
             if (repeat == 0) {
@@ -89,6 +90,7 @@ $(function(){
                 // alert(aPlayList[i].sources[0].file);
                 code = word[0];
                 dispName = word[2];
+                wordNum=dispName.length;
                 hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
                 // $('#pinyin').innerHTML=dispName;
             }
