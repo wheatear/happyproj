@@ -56,7 +56,7 @@ $(function(){
         });
 
         ply.onComplete(function(event){
-            slpTime=6000*wordNum;
+            slpTime=3000*wordNum;
             sleep(slpTime);
             // ply.pause();
             // setTimeout("playGo()",2000);
