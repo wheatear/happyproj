@@ -68,7 +68,7 @@ $(function(){
         //fill ul
         function fillUl(aNames,hUl){
                 hUl.empty();
-                hUl.append('<label>课文</label>');
+                // hUl.append('<label>课文</label>');
                 $.each(aNames, function(i,dName){
                     //fill head
                     code = dName[0];
@@ -80,7 +80,7 @@ $(function(){
         //fill radio
         function fillRadio(aNames,hRadio,checkKey){
                 hRadio.empty();
-                hRadio.append('<label>课文</label><br>');
+                // hRadio.append('<label>课文</label><br>');
                 $.each(aNames, function(i,dName){
                     //fill head
                     code = dName[0];
