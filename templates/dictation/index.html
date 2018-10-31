@@ -14,7 +14,7 @@
     <script src="/static/dictation/js/popper.min.js"></script>
     <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- player JS -->
-    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>
+{#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
     <script type="text/javascript" src="/static/dictation/js/index.js"></script>
@@ -49,8 +49,9 @@
                     <option value ="1单元">1单元</option>
                 </select>
             </div>
-            <div class="form-group radio" id="lesson">
+            <div class="form-group radio">
                 <label>课文</label>
+                <div id="lesson">
                 <label>第1课<input type="radio" name="lesson" value="1" checked></label>
                 <br>
                 <label>第2课<input type="radio" name="lesson" value="2" checked></label>
@@ -61,6 +62,8 @@
 {#                    <li value ="第3课">第3课</li>#}
 {#                    <li value ="第4课">第4课</li>#}
 {#                </ul>#}
+
+                </div>
             </div>
             <div class="form-group">
                 <label>词语</label>
