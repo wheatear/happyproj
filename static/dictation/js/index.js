@@ -39,7 +39,7 @@ $(function(){
 
             $('#next').click(function(){
                 // alert('submit');
-                hSubmit=$('#submit');
+                hSubmit=$('#study');
                 hSubmit.trigger("click");
             })
 });

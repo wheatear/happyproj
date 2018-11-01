@@ -86,11 +86,10 @@ $(function(){
             if(repeat==0 ) {
                 var i = ply.getPlaylistIndex();
                 var word = aWords[i];
-                // alert(i+word[1]);
-                // alert(aPlayList[i].sources[0].file);
                 code = word[0];
-                dispName = word[2];
-                wordNum=dispName.length;
+                pinyin = word[2];
+                dispName = pinyin.join(' ');
+                wordNum=pinyin.length;
                 hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
                 // $('#pinyin').innerHTML=dispName;
             }

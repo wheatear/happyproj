@@ -54,3 +54,31 @@ class ChoiceSelected(models.Model):
     choicecode = models.IntegerField()
     class Meta:
         db_table='lw_choiceselected'
+
+class TestManager(models.Manager):
+    def create(self,press,book,unit=None,lesson=None):
+        test = self.model()
+        test.press = press
+        test.book = book
+        test.unit = unit
+        test.lesson = lesson
+        test.testname = book.bookname
+        if lesson:
+            test.testname += lesson.lessonname
+        elif unit:
+            test.testname += unit.name
+
+class Test(models.Model):
+    id=models.IntegerField(db_column='testid',primary_key=True)
+    testtime=models.DateTimeField(auto_now_add=True)
+    testname=models.CharField(max_length=50)
+    testcontent=models.CharField(max_length=200,null=True)
+    level=models.CharField(max_length=20,null=True)
+    type=models.CharField(max_length=20)
+    press=models.ForeignKey(Press,None,db_column='pressid')
+    book = models.ForeignKey(Book, None, db_column='bookid')
+    unit = models.ForeignKey(Unit, None, db_column='unitid',null=True)
+    lesson = models.ForeignKey(Lesson, None, db_column='lessonid',null=True)
+
+    tests = TestManager()
+

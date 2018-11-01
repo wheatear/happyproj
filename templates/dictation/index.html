@@ -30,7 +30,7 @@
         </div>
         <div class="center_part">
             <form action="dispwords/">
-                <input type="submit" value="Submit" id="submit" hidden>
+{#                <input type="submit" value="Submit" id="submit" hidden>#}
             <div class="form-group">
                 <label>出版社</label>
                 <select class="form-control" name="press" id="press">
@@ -72,13 +72,18 @@
                     <option value ="前50">前50</option>
                 </select>
             </div>
+                <div class="createpanel clearfix">
+                    <div><input type="submit" name="study" value="study" id="study">复习</div>
+                    <div><input type="submit" name="dictate" value="dictate" id="dictate">听写</div>
+                </div>
             </form>
+
         </div>
         <div class="footer_part clearfix">
             <div><button class="footbtn" id="create">创建</button></div>
             <div><button class="footbtn" id="dictation">听写</button></div>
-            <div><button class="footbtn" id="dictation1">听写</button></div>
             <div><button class="footbtn" id="record">记录</button></div>
+            <div><button class="footbtn" id="errword">错词</button></div>
         </div>
 
     </div>

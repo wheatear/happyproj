@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^initQry/$', views.initQry),
     url(r'^qryLesson/$', views.qryLesson),
     url(r'^dispwords/$', views.dispWords),
+    url(r'^checkwords/$', views.checkWords),
     url(r'^qryWords/$', views.qryWords),
     url(r'^dictating/$', views.dictating),
     url(r'^qryVoice/$', views.qryVoice),

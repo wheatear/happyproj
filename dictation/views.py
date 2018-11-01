@@ -7,6 +7,7 @@ import os
 import dictation
 import logging
 from dictation import voicebuilder
+from dictation import models
 
 
 # Create your views here.
@@ -79,8 +80,17 @@ def qryLesson(request):
 
 def dispWords(request):
     lessonId = request.GET.get('lesson',None)
+    pressId = request.GET.get('press', None)
+    bookId = request.GET.get('book', None)
+    unitId = request.GET.get('unit', None)
     if lessonId:
         request.session['lessionId'] = lessonId
+    if pressId:
+        request.session['pressId'] = pressId
+    if bookId:
+        request.session['bookId'] = bookId
+    if unitId:
+        request.session['unitId'] = unitId
     return render(request, 'dictation/dispwords.html')
 
 def qryWords(request):
@@ -94,6 +104,21 @@ def qryWords(request):
     return JsonResponse(dRes)
 
 def dictating(request):
+    lessonId = request.session['lessionId']
+    unitId = request.session['unitId']
+    bookId = request.session['bookId']
+    pressId = request.session['pressId']
+    if lessonId:
+        # lesson = dictation.models.Lesson.objects.filter(id=lessonId)
+        lesson = dictation.models.Lesson.objects.get(id=lessonId)
+    if unitId:
+        unit = dictation.models.Unit.objects.get(id=unitId)
+    if bookId:
+        book = dictation.models.Book.objects.get(id=bookId)
+    if pressId:
+        press = dictation.models.Press.objects.get(id=pressId)
+    test = models.Test.tests.create(press,book,unit,lesson)
+    test.save()
     return render(request,'dictation/dictating.html')
 
 def qryVoice(request):

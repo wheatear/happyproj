@@ -14,39 +14,35 @@
     <script src="/static/dictation/js/popper.min.js" ></script>
     <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- player JS -->
-    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>
+{#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/dispwords.css">
-    <link rel="stylesheet" type="text/css" href="/static/dictation/css/dictating.css">
-    <script type="text/javascript" src="/static/dictation/js/dictating.js"></script>
+    <script type="text/javascript" src="/static/dictation/js/dispwords.js"></script>
 </head>
 <body>
     <div class="main_cont clearfix">
         <div class="header_part">
             <button class="btn btn-primary" id="dictype">生词</button>
-            <span>听写词语</span>
-            <a class="btn btn-default" id="next" href="/dictation/checkwords/">下一步</a>
+            <span>检查词语</span>
+            <a class="btn btn-default" id="next" href="/dictation/dictating/">下一步</a>
         </div>
         <div class="center_part">
 
             <div  id="words">
 
+                <div class="word un" code="1">词语1</div>
+                <div class="word un" code="2">词语2</div>
+
             </div>
-            <div id="play"><div class="cy" id="playercontainer"></div></div>
-            <div class="playerpanel clearfix">
-                <div><button type="button" class="playerbutton" id="toPlay">开始听写</button></div>
-                <div><button type="button" class="playerbutton" id="nextWord">下一个</button></div>
-                <div><button type="button" class="playerbutton" id="prevWord">上一个</button></div>
-                <div><button type="button" class="playerbutton" id="pause">暂停/恢复</button></div>
-                <div><button type="button" class="playerbutton" id="stop">结束听写</button></div>
-            </div>
+
+
         </div>
         <div class="footer_part clearfix">
             <div><button class="footbtn" id="create">创建</button></div>
             <div><button class="footbtn" id="dictation">听写</button></div>
-            <div><button class="footbtn" id="dictation1">听写</button></div>
             <div><button class="footbtn" id="record">记录</button></div>
+            <div><button class="footbtn" id="errword">错词</button></div>
         </div>
 
     </div>
