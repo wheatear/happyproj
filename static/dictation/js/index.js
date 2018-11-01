@@ -22,14 +22,14 @@ $(function(){
             });
 
             $('#unit').change(function(){
-                alert('unit changed');
+                // alert('unit changed');
                 hLesson = $('#lesson');
                 hLesson.empty();
                 unitCode = $(this).val();
                 aLesson.push(unitCode);
                 // alert(aLesson);
                 qry = 'qryLesson/?unit='+unitCode;
-                alert(qry);
+                // alert(qry);
                 $.get(qry,function(dic){
                     aLesson = dic.lesson;
                     // alert(aLesson);
