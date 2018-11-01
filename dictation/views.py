@@ -103,22 +103,30 @@ def qryWords(request):
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
 
+def checkWords(request):
+    return render(request, 'dictation/checkwords.html')
+
 def dictating(request):
     lessonId = request.session['lessionId']
     unitId = request.session['unitId']
     bookId = request.session['bookId']
     pressId = request.session['pressId']
+
     if lessonId:
-        # lesson = dictation.models.Lesson.objects.filter(id=lessonId)
         lesson = dictation.models.Lesson.objects.get(id=lessonId)
+        print('dictate lesson: %s' % lessonId)
     if unitId:
         unit = dictation.models.Unit.objects.get(id=unitId)
+        print('dictate unit: %s' % unitId)
     if bookId:
         book = dictation.models.Book.objects.get(id=bookId)
     if pressId:
         press = dictation.models.Press.objects.get(id=pressId)
+    print('dictate lesson: %s' % lesson)
+    print('dictate unit: %s' % unit)
     test = models.Test.tests.create(press,book,unit,lesson)
     test.save()
+    request.session['testId'] = test.id
     return render(request,'dictation/dictating.html')
 
 def qryVoice(request):
@@ -133,7 +141,18 @@ def qryVoice(request):
     dRes = {'words': aWords}
     return JsonResponse(dRes)
 
+def qryTestWords(request):
+    aWords = request.session['words']
+    dRes = {'words': aWords}
+    return JsonResponse(dRes)
+
 def dispPinyin(request):
     return render(request,'dictation/index.html')
 
+def saveTest(request):
+    testid = request.session['testId']
+    testRlt = request.POST.get('test', None)
+    for w in testRlt:
+        tstWd = models.TestWordManager.create(testid, w[0], w[1])
+        tstWd.save()
 

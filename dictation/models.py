@@ -67,9 +67,10 @@ class TestManager(models.Manager):
             test.testname += lesson.lessonname
         elif unit:
             test.testname += unit.name
+        return test
 
 class Test(models.Model):
-    id=models.IntegerField(db_column='testid',primary_key=True)
+    id=models.AutoField(db_column='testid',primary_key=True)
     testtime=models.DateTimeField(auto_now_add=True)
     testname=models.CharField(max_length=50)
     testcontent=models.CharField(max_length=200,null=True)
@@ -81,4 +82,21 @@ class Test(models.Model):
     lesson = models.ForeignKey(Lesson, None, db_column='lessonid',null=True)
 
     tests = TestManager()
+    class Meta:
+        db_table='lw_test'
 
+class TestWordManager(models.Manager):
+    def create(self,testid,wordid, wrong=False):
+        testWord = self.model()
+        testWord.testid = testid
+        testWord.wordid = wordid
+        return testWord
+
+class TestWord(models.Model):
+    test=models.ForeignKey(Test,db_column='testid')
+    wrong=models.BooleanField(db_column='wrong',default=False)
+    word=models.ForeignKey(Word,db_column='wordid')
+    class Meta:
+        db_table='lw_testwords'
+
+    objects = TestWordManager()

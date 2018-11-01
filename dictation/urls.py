@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^qryWords/$', views.qryWords),
     url(r'^dictating/$', views.dictating),
     url(r'^qryVoice/$', views.qryVoice),
+    url(r'^qryTestWords/$', views.qryTestWords),
+    url(r'^saveTest/$', views.saveTest),
 ]
