@@ -28,7 +28,7 @@ $(function(){
         });
         // alert(wdResult);
         $.post('/dictation/saveTest/',wdResult);
-
+        window.location.href = '/dictation/'
     })
 });
 

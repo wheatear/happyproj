@@ -12,6 +12,10 @@ $(function(){
         // $(this).attr({'code':1});
         // alert($(this).attr('code'));
         $(this).toggleClass("se");
+    });
+
+    $('#next').click(function(){
+        window.location.href = '/dictation/dictating/'
     })
 });
 

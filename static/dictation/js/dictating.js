@@ -200,7 +200,9 @@ $(function(){
             //player.playlistNext();
     });
 
-
+    $('#next').click(function(){
+        window.location.href = '/dictation/checkwords/'
+    });
 
     // player.onPlaylistItem(function(event){
     //             //alert("onPlaylistItem");
