@@ -12,18 +12,22 @@ $(function(){
         // $(this).attr({'code':1});
         // alert($(this).attr('code'));
         $(this).toggleClass("se");
-    })
+    });
 
     $('#saveTest').click(function(){
-        wdResult = [];
-        $('.word').each(function(i){
-            if(this.className.indexOf('.un') >= 0) {
-                wdResult.push([this.code,false])
+        // alert('save test');
+        wdResult = {};
+        $('.word').each(function(i,w){
+            // alert(w.id);
+            // alert(w.className);
+            if(w.className.indexOf('se') >= 0) {
+                wdResult[w.id] = 'True'
             } else {
-                wdResult.push([this.code,true])
+                wdResult[w.id] = 'False'
             }
         });
-        $.post('/dictation/saveTest/',{'test':wdResult});
+        // alert(wdResult);
+        $.post('/dictation/saveTest/',wdResult);
 
     })
 });
@@ -34,7 +38,7 @@ function fillWords(aWords,hWords){
         var code = aWd[0];
         // alert(aWd);
         var dispName = aWd[1];
-        hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
+        hWords.append('<label class="word un" id='+code+'>'+dispName+'</label>');
 
     });
     $('.word').click(function(){

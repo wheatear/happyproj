@@ -151,8 +151,12 @@ def dispPinyin(request):
 
 def saveTest(request):
     testid = request.session['testId']
-    testRlt = request.POST.get('test', None)
+    # testRlt = request.POST.get('test[]', None)
+    print('savetest %s' % testid)
+    testRlt = request.POST
+    print('save test words %s' % testRlt)
     for w in testRlt:
-        tstWd = models.TestWordManager.create(testid, w[0], w[1])
+        tstWd = models.TestWord.objects.create(testid, w, testRlt[w])
         tstWd.save()
+    return
 

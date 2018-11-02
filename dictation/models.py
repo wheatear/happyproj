@@ -88,14 +88,16 @@ class Test(models.Model):
 class TestWordManager(models.Manager):
     def create(self,testid,wordid, wrong=False):
         testWord = self.model()
-        testWord.testid = testid
-        testWord.wordid = wordid
+        testWord.test_id = testid
+        testWord.word_id = wordid
+        testWord.wrong = wrong
+
         return testWord
 
 class TestWord(models.Model):
-    test=models.ForeignKey(Test,db_column='testid')
+    test=models.ForeignKey(Test,None,db_column='testid')
     wrong=models.BooleanField(db_column='wrong',default=False)
-    word=models.ForeignKey(Word,db_column='wordid')
+    word=models.ForeignKey(Word,None,db_column='wordid')
     class Meta:
         db_table='lw_testwords'
 
