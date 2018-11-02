@@ -49,6 +49,7 @@ body{
     bottom:40px;
     color:red;
     overflow:auto;
+    font-size: 0;
 }
 
 ul{
@@ -99,14 +100,3 @@ ul{
     /*margin:4px auto 0;*/
 }
 
-#dictation{
-
-}
-
-#dictation1{
-
-}
-
-#record{
-
-}
