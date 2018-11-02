@@ -1,6 +1,6 @@
 
 body{
-	background-color:gold;
+    background-color:gold;
 }
 
 
@@ -54,6 +54,24 @@ body{
 ul{
     list-style: none;
     padding:0;
+}
+
+/*.lesson{*/
+/*position:absolute;*/
+/**/
+/*}*/
+.lsradio{
+    float:left;
+    width:50%;
+}
+
+.createpanel div{
+    float:left;
+    width:50%;
+}
+
+.createpanel input{
+    margin:4px auto ;
 }
 
 .footer_part {

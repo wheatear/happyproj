@@ -14,7 +14,7 @@
     <script src="/static/dictation/js/popper.min.js"></script>
     <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <!-- player JS -->
-{#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
+    {#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
     <script type="text/javascript" src="/static/dictation/js/index.js"></script>
@@ -22,15 +22,15 @@
 
 </head>
 <body>
-    <div class="main_cont clearfix">
-        <div class="header_part">
-            <button class="btn btn-primary" id="dictype">生词</button>
-            <span>选择课文</span>
-            <button class="btn btn-default" id="next">下一步</button>
-        </div>
-        <div class="center_part">
-            <form action="dispwords/">
-{#                <input type="submit" value="Submit" id="submit" hidden>#}
+<div class="main_cont clearfix">
+    <div class="header_part">
+        <button class="btn btn-primary" id="dictype">生词</button>
+        <span>选择课文</span>
+        <button class="btn btn-default" id="next">下一步</button>
+    </div>
+    <div class="center_part">
+        <form action="dispwords/">
+            {#                <input type="submit" value="Submit" id="submit" hidden>#}
             <div class="form-group">
                 <label>出版社</label>
                 <select class="form-control" name="press" id="press">
@@ -52,16 +52,11 @@
             <div class="form-group radio">
                 <label>课文</label>
                 <div id="lesson">
-                <label>第1课<input type="radio" name="lesson" value="1" checked></label>
-                <br>
-                <label>第2课<input type="radio" name="lesson" value="2" checked></label>
-                <br>
-{#                <ul class="form-control" id="lesson">#}
-{#                    <li ><input type="radio" name="lesson" value="1" checked>第1课</li>#}
-{#                    <li value ="第2课">第2课</li>#}
-{#                    <li value ="第3课">第3课</li>#}
-{#                    <li value ="第4课">第4课</li>#}
-{#                </ul>#}
+                    <label class="lsradio">第1课<input type="radio" name="lesson" value="1" checked></label>
+                    <br>
+                    <label class="lsradio">第2课<input type="radio" name="lesson" value="2" checked></label>
+                    <br>
+
 
                 </div>
             </div>
@@ -72,20 +67,20 @@
                     <option value ="前50">前50</option>
                 </select>
             </div>
-                <div class="createpanel clearfix">
-                    <div><input type="submit" name="study" value="复习" id="study"></div>
-                    <div><input type="submit" name="dictate" value="听写" id="dictate"></div>
-                </div>
-            </form>
-
-        </div>
-        <div class="footer_part clearfix">
-            <div><button class="footbtn" id="create">创建</button></div>
-            <div><button class="footbtn" id="dictation">听写</button></div>
-            <div><button class="footbtn" id="record">记录</button></div>
-            <div><button class="footbtn" id="errword">错词</button></div>
-        </div>
+            <div class="createpanel clearfix">
+                <div><input class="btn btn-default" type="submit" name="study" value="复习" id="study"></div>
+                <div><input class="btn btn-default" type="submit" name="dictate" value="听写" id="dictate"></div>
+            </div>
+        </form>
 
     </div>
+    <div class="footer_part clearfix">
+        <div><button class="footbtn" id="create">创建</button></div>
+        <div><button class="footbtn" id="dictation">听写</button></div>
+        <div><button class="footbtn" id="record">记录</button></div>
+        <div><button class="footbtn" id="errword">错词</button></div>
+    </div>
+
+</div>
 </body>
 </html>
