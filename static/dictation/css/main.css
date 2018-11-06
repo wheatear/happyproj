@@ -52,6 +52,19 @@ body{
     font-size: 0;
 }
 
+.center_part div{
+    font-size: 30px;
+}
+
+.ch{
+    position: absolute;
+    left: 0;
+    top:0px;
+    right: 0;
+    bottom: 0;
+
+
+}
 ul{
     list-style: none;
     padding:0;
@@ -62,17 +75,24 @@ ul{
 /**/
 /*}*/
 .lsradio{
-    float:left;
+    /*float:left;*/
     width:50%;
 }
 
+/*.createpanel{*/
+    /*position:absolute;*/
+    /*bottom: 0;*/
+    /**/
+/*}*/
 .createpanel div{
     float:left;
     width:50%;
+    text-align: center;
 }
 
 .createpanel input{
     margin:4px auto ;
+    font:20px/40px '宋体'
 }
 
 .footer_part {
