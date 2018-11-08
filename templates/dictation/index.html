@@ -25,12 +25,33 @@
 <div class="main_cont clearfix">
     <div class="header_part">
         <button class="btn btn-primary" id="dictype">生词</button>
-        <span>选择课文</span>
-        <button class="btn btn-default" id="next">下一步</button>
+        {#        <span>选择课文</span>#}
+        <button class="btn btn-default" id="next">错词</button>
     </div>
+
     <div class="center_part">
+
         <form class="ch" action="dispwords/">
             {#                <input type="submit" value="Submit" id="submit" hidden>#}
+{#            <div><ul id="myTab" class="nav nav-tabs">#}
+{#                <li class="active"><a href="#newword" data-toggle="tab">生词</a></li>#}
+{#                <li><a href="#wrongword" data-toggle="tab">错词</a></li>#}
+{#            </ul></div>#}
+
+            <div class="tab-pane fade" id="wrongword">
+                <div>
+                    <label>时间</label>
+                    <select class="form-control" name="test" id="test">
+                        <option value ="last">上次测试</option>
+                    </select></div>
+                <div>
+                    <label>测试</label>
+                    <select class="form-control" name="test" id="test">
+                        <option value ="test1">测试1</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label>出版社</label>
                 <select class="form-control" name="press" id="press">
@@ -56,10 +77,9 @@
                     <br>
                     <label class="lsradio">第2课<input type="radio" name="lesson" value="2" checked></label>
                     <br>
-
-
                 </div>
             </div>
+
             <div class="form-group">
                 <label>词语</label>
                 <select class="form-control">

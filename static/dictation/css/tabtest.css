@@ -1,0 +1,27 @@
+            h2 {
+                border-top: solid cornflowerblue 1px;
+                border-left: solid cornflowerblue 1px;
+                width: 50px;
+                height: 25px;
+                margin: 0;
+                float: left;
+                text-align: center;
+            }
+
+            .tab-content {
+                border: solid cornflowerblue 1px;
+                width: 152px;
+                height: 100px;
+            }
+
+            .tab-content div{
+                display: none;
+            }
+
+            .selected {
+                background-color: cornflowerblue;
+            }
+
+            .tab-content .show{
+                display: block;
+            }

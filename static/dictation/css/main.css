@@ -1,7 +1,7 @@
 
-body{
-    background-color:gold;
-}
+/*body{*/
+    /*background-color:gold;*/
+/*}*/
 
 
 .main_cont {
@@ -10,7 +10,7 @@ body{
     right:0;
     top:0;
     bottom:0;
-    background-color: lightblue;
+    /*background-color: lightblue;*/
 }
 
 .header_part{
@@ -54,6 +54,10 @@ body{
 
 .center_part div{
     font-size: 30px;
+}
+
+.tab-content div{
+    display:None;
 }
 
 .ch{

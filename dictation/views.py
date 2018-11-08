@@ -160,3 +160,5 @@ def saveTest(request):
         tstWd.save()
     return
 
+def tabtest(request):
+    return render(request,'dictation/tabtest.html')

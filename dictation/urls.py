@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^qryVoice/$', views.qryVoice),
     url(r'^qryTestWords/$', views.qryTestWords),
     url(r'^saveTest/$', views.saveTest),
+    url(r'^tabtest/$', views.tabtest),
 ]
