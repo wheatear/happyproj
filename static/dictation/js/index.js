@@ -9,6 +9,8 @@ $(function(){
         aBook = dic.book;
         aUnit = dic.unit;
         aLesson = dic.lesson;
+        aTestTime = dic.testtime;
+        aTest = dic.test;
         // alert(aLesson)
         hPress = $('#press');
         hBook = $('#book');
@@ -36,11 +38,12 @@ $(function(){
             fillRadio(aLesson,hLesson,'None');
         })
     });
-
+alert('ok')
     $('#next').click(function(){
-        // alert('submit');
-        hSubmit=$('#study');
-        hSubmit.trigger("click");
+
+        alert($('.hide'))
+        // $('.hide').className = 'show';
+        $('.hide').toggleClass("show");
     })
 });
 

@@ -52,13 +52,21 @@
     font-size: 0;
 }
 
+.hide{
+    display:none;
+}
+
+.show{
+    display:inline-block;
+}
+
 .center_part div{
     font-size: 30px;
 }
 
-.tab-content div{
-    display:None;
-}
+/*.tab-content div{*/
+    /*display:None;*/
+/*}*/
 
 .ch{
     position: absolute;
