@@ -38,13 +38,23 @@ $(function(){
             fillRadio(aLesson,hLesson,'None');
         })
     });
-alert('ok')
-    $('#next').click(function(){
 
-        alert($('.hide'))
-        // $('.hide').className = 'show';
-        $('.hide').toggleClass("show");
-    })
+    $('#wrongword').click(function(){
+        aWrongWd = $('.wrongword');
+        aWrongWd.addClass('show');
+        aWrongWd.removeClass('hide');
+
+        $('.dictype[value=wrongword]').attr('checked','checked');
+        $('.dictype[value=newword]').removeAttr('checked');
+    });
+
+    $('#newword').click(function(){
+        aWrongWd = $('.wrongword');
+        aWrongWd.addClass('hide');
+        aWrongWd.removeClass('show');
+        $('.dictype[value=wrongword]').removeAttr('checked');
+        $('.dictype[value=newword]').attr('checked','checked');
+    });
 });
 
 //fill select

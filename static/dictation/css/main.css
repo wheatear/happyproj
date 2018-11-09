@@ -47,7 +47,7 @@
     top:40px;
     right:0;
     bottom:40px;
-    color:red;
+    /*color:red;*/
     overflow:auto;
     font-size: 0;
 }
@@ -57,7 +57,7 @@
 }
 
 .show{
-    display:inline-block;
+    display:block;
 }
 
 .center_part div{
