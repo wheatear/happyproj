@@ -4,23 +4,26 @@ var aLesson=[];
 $(function(){
     $.get('/dictation/initQry/', function(dic){
         dChoiceSelected = dic.choiceSelected;
-
         aPress = dic.press;
         aBook = dic.book;
         aUnit = dic.unit;
         aLesson = dic.lesson;
         aTestTime = dic.testtime;
         aTest = dic.test;
+        aWordScope = dic.wordscope;
         // alert(aLesson)
         hPress = $('#press');
         hBook = $('#book');
         hUnit = $('#unit');
         hLesson = $('#lesson');
+        hTest = $('#test');
         fillSelect(aPress,hPress,dChoiceSelected['press']);
         fillSelect(aBook,hBook,dChoiceSelected['book']);
         fillSelect(aUnit,hUnit,dChoiceSelected['unit']);
 
-        fillRadio(aLesson,hLesson,dChoiceSelected['lesson']);
+        // fillRadio(aLesson,hLesson,dChoiceSelected['lesson']);
+        fillSelect(aLesson,hLesson,dChoiceSelected['lesson']);
+        fillSelect(aTest,hTest,dChoiceSelected['test']);
     });
 
     $('#unit').change(function(){
@@ -35,7 +38,25 @@ $(function(){
         $.get(qry,function(dic){
             aLesson = dic.lesson;
             // alert(aLesson);
-            fillRadio(aLesson,hLesson,'None');
+            // fillRadio(aLesson,hLesson,'None');
+            fillSelect(aLesson,hLesson,'None');
+        })
+    });
+
+    $('#lesson').change(function(){
+        // alert('unit changed');
+        hTest = $('#test');
+        hTest.empty();
+        lessonId = $(this).val();
+        // alert(lessonId);
+        // aLesson.push(unitCode);
+        // alert(aLesson);
+        qry = 'qryTest/?lesson='+lessonId;
+        // alert(qry);
+        $.get(qry,function(dic){
+            aTest = dic.test;
+            // alert(aLesson);
+            fillSelect(aTest,hTest,'None');
         })
     });
 

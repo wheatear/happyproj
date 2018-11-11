@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 
@@ -50,8 +51,8 @@ class Word(models.Model):
 
 class ChoiceSelected(models.Model):
     choicename=models.CharField(max_length=20)
-    choicevalue=models.CharField(max_length=100)
-    choicecode = models.IntegerField()
+    choicevalue=models.CharField(max_length=100, null=True, blank=True)
+    choicecode = models.IntegerField(null=True, blank=True)
     class Meta:
         db_table='lw_choiceselected'
 
@@ -67,6 +68,7 @@ class TestManager(models.Manager):
             test.testname += lesson.lessonname
         elif unit:
             test.testname += unit.name
+        test.testname += datetime.datetime.now().strftime('%y%m%d%H%M%S')
         return test
 
 class Test(models.Model):
@@ -102,3 +104,22 @@ class TestWord(models.Model):
         db_table='lw_testwords'
 
     objects = TestWordManager()
+
+class ChoiceManager(models.Manager):
+    def create(self, type, name,condition):
+        choice = self.model()
+        choice.type = type
+        choice.name = name
+        choice.condition = condition
+        return choice
+
+class Choice(models.Model):
+    type=models.CharField(max_length=20,db_column='choicetype',default='time')
+    name=models.CharField(max_length=50,db_column='choicename')
+    condition=models.CharField(max_length=60)
+
+    class Meta:
+        db_table='lw_choice'
+    objects = ChoiceManager()
+
+
