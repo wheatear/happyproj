@@ -119,6 +119,13 @@ class VoiceBuilder(object):
                 aWd.append(voiceFile)
         return aWords
 
+    def builderPinyin(self, aWords):
+        for aWd in aWords:
+            print(aWd)
+            word = aWd[1]
+            aWd.append(self.makePinyin(word))
+        return aWords
+
     def getVoice(self, aWords):
         for aWd in aWords:
             print(aWd)

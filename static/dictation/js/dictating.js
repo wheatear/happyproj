@@ -15,6 +15,16 @@ $(function(){
         hWords = $('#words');
         fillWords(aWords,hWords);
     });
+    hDisp = $('#dispWord');
+    hPlay = $('#toPlay');
+    hCheck = $('#checkWord');
+    hSave = $('#saveTest');
+
+    hPlay.html('准备听写');
+    hPlay.attr("disabled","true");
+    hDisp.attr("disabled","true");
+    hCheck.attr("disabled","true");
+    hSave.attr("disabled","true");
 
     $('.word').click(function(){
         // $(this).attr({'code':1});
@@ -23,27 +33,31 @@ $(function(){
     });
 
     $.get('/dictation/makeVoice/', function(dic){
-        $('#toPlay').innerHTML = '开始听写';
-        $('#toPlay').disabled = false;
+        aWords = dic.words;
+        alert(aWords);
+        makePlayList(aWords);
+        // alert(aPlayList);
+        playerSet(player,aPlayList);
+        // hPlay = $('#toPlay');
+        hPlay.removeAttr("disabled");
+        hPlay.html('开始听写');
+        // hPlay.disabled = false;
     });
 
     player = cyberplayer("playercontainer");
     $('#toPlay').click(function(){
-        wdPlay = [];
-        $('.word').each(function(i,w){
-            if(w.className.indexOf('se') >= 0) {
-                wdPlay.push(w.id);
-            }
-        });
-        $.post('/dictation/qryVoice/',{'word':wdPlay}, function(dic){
-            aWords = dic.words;
-            // alert(aWords);
-            hWords = $('#words');
-            makePlayList(aWords);
-            // alert(aPlayList);
-            playerSet(player,aPlayList);
-        });
+        // wdPlay = [];
+        // $('.word').each(function(i,w){
+        //     wdPlay.push(w.id);
+        //     // if(w.className.indexOf('se') >= 0) {
+        //     //     wdPlay.push(w.id);
+        //     // }
+        // });
+        // alert(wdPlay);
+        // hWords = $('#words');
+        hWords.empty();
         player.play();
+        hCheck.removeAttr("disabled");
         // len = aPlayList.length;
         // alert(len)
         // hWords = $('#words');
@@ -70,7 +84,29 @@ $(function(){
     });
 
     $('#checkWord').click(function () {
+        fillWords(aWords,hWords);
+        hSave.removeAttr("disabled");
+        // $('.word').click(function(){
+        //     // $(this).attr({'code':1});
+        //     // alert($(this).attr('code'));
+        //     $(this).toggleClass("se");
+        // });
+    });
 
+    $('#saveTest').click(function () {
+        wdResult = {};
+        $('.word').each(function(i,w){
+            // alert(w.id);
+            // alert(w.className);
+            if(w.className.indexOf('se') >= 0) {
+                wdResult[w.id] = 'True'
+            } else {
+                wdResult[w.id] = 'False'
+            }
+        });
+        // alert(wdResult);
+        $.post('/dictation/saveTest/',wdResult);
+        // window.location.href = '/dictation/'
     });
 
     //player set
@@ -89,7 +125,7 @@ $(function(){
             //     {sources: [{file: "/static/dictation/voice/8d5e626c_05212.mp3"}],},
             //     {sources: [{file: "/static/dictation/voice/81ea8c6a_05212.mp3"}],},
             //     ],
-            playlist: aPlayList,
+            playlist: list,
             // playlist: sPlayList,
             //image: "http://gcqq450f71eywn6bv7u.exp.bcevod.com/mda-hbqagik5sfq1jsai/mda-hbqagik5sfq1jsai.jpg", // 预览图
             autostart: false, // 是否自动播放
@@ -107,47 +143,51 @@ $(function(){
             // },
             ak: "a0dbd2b027ee45c0b6bfdf548e519727" // 公有云平台注册即可获得accessKey
         });
+
+        ply.onComplete(function(event){
+            slpTime=3000*wordNum;
+            sleep(slpTime);
+            // ply.pause();
+            // setTimeout("playGo()",2000);
+            if (repeat == 0) {
+                repeat = 1;
+                var i = ply.getPlaylistIndex();
+                ply.playlistItem(i);
+            } else {
+                repeat = 0;
+            }
+        });
+
+        ply.onPlay(function(event){
+            // alert('play...' );
+            // alert('playing... ' +repeat)
+            if(repeat==0 ) {
+                var i = ply.getPlaylistIndex();
+                var word = aWords[i];
+                code = word[0];
+                pinyin = word[2];
+                dispName = pinyin.join(' ');
+                // alert(dispName)
+                wordNum=pinyin.length;
+                hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
+                // $('#pinyin').innerHTML=dispName;
+            }
+        });
+
+
+        function playGo(){
+            if (repeat == 0) {
+                repeat = 1;
+                var i = ply.getPlaylistIndex();
+                ply.playlistItem(i);
+            } else {
+                repeat = 0;
+                ply.play();
+            }
+        }
+
     }
 
-    player.onComplete(function(event){
-        slpTime=3000*wordNum;
-        sleep(slpTime);
-        // ply.pause();
-        // setTimeout("playGo()",2000);
-        if (repeat == 0) {
-            repeat = 1;
-            var i = ply.getPlaylistIndex();
-            ply.playlistItem(i);
-        } else {
-            repeat = 0;
-        }
-    });
-
-    function playGo(){
-        if (repeat == 0) {
-            repeat = 1;
-            var i = player.getPlaylistIndex();
-            player.playlistItem(i);
-        } else {
-            repeat = 0;
-            player.play();
-        }
-    }
-
-    player.onPlay(function(event){
-        // alert('play...' );
-        // alert('playing...')
-        if(repeat==0 ) {
-            var i = ply.getPlaylistIndex();
-            var word = aWords[i];
-            code = word[0];
-            pinyin = word[2];
-            dispName = pinyin.join(' ');
-            wordNum=pinyin.length;
-            hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
-            // $('#pinyin').innerHTML=dispName;
-        }
-    });
 
     function makePlayList(aWords){
         // hWords.empty();
@@ -167,6 +207,7 @@ $(function(){
             //     return
             // }
         });
+        return aPlayList;
     }
 
 
@@ -246,7 +287,6 @@ $(function(){
             // alert(aWd);
             var dispName = aWd[1];
             hWords.append('<label class="word un" id='+code+'>'+dispName+'</label>');
-
         });
         $('.word').click(function(){
             $(this).toggleClass("se");
