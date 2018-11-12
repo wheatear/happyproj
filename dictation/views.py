@@ -92,10 +92,10 @@ def qryTest(request):
     return JsonResponse(dRes)
 
 def dispWords(request):
-    lessonId = request.GET.get('lesson',None)
     pressId = request.GET.get('press', None)
     bookId = request.GET.get('book', None)
     unitId = request.GET.get('unit', None)
+    lessonId = request.GET.get('lesson', None)
     testtime = request.GET.get('testtime', None)
     testId = request.GET.get('test', None)
     dictype = request.GET.get('dictype', None)
@@ -112,7 +112,7 @@ def dispWords(request):
         request.session['testId'] = testId
     if dictype:
         request.session['dictype'] = dictype
-    return render(request, 'dictation/dispwords.html')
+    return render(request, 'dictation/dictating.html')
 
 def qryWords(request):
     dicType = request.session['dictype']
@@ -135,15 +135,51 @@ def qryWords(request):
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
 
-def checkWords(request):
-    return render(request, 'dictation/checkwords.html')
+# def checkWords(request):
+#     return render(request, 'dictation/checkwords.html')
 
-def dictating(request):
+# def dictating(request):
+#     lessonId = request.session['lessionId']
+#     unitId = request.session['unitId']
+#     bookId = request.session['bookId']
+#     pressId = request.session['pressId']
+#
+#     if lessonId:
+#         lesson = dictation.models.Lesson.objects.get(id=lessonId)
+#         print('dictate lesson: %s' % lessonId)
+#     if unitId:
+#         unit = dictation.models.Unit.objects.get(id=unitId)
+#         print('dictate unit: %s' % unitId)
+#     if bookId:
+#         book = dictation.models.Book.objects.get(id=bookId)
+#     if pressId:
+#         press = dictation.models.Press.objects.get(id=pressId)
+#     print('dictate lesson: %s' % lesson)
+#     print('dictate unit: %s' % unit)
+#     test = models.Test.tests.create(press,book,unit,lesson)
+#     test.save()
+#     request.session['testId'] = test.id
+#     return render(request,'dictation/dictating.html')
+
+def makeVoice(request):
+    print('make word voice...')
+    aWords = request.session['words']
+    request.session['words'] = None
+    print(aWords)
+    voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
+    builder = voicebuilder.VoiceBuilder(voicePath)
+    builder.builderVoice(aWords)
+    # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
+    # dRes = {'words': aWords}
+    # return JsonResponse(dRes)
+    return JsonResponse()
+
+def qryVoice(request):
+    print('qryVoice...')
     lessonId = request.session['lessionId']
     unitId = request.session['unitId']
     bookId = request.session['bookId']
     pressId = request.session['pressId']
-
     if lessonId:
         lesson = dictation.models.Lesson.objects.get(id=lessonId)
         print('dictate lesson: %s' % lessonId)
@@ -154,23 +190,23 @@ def dictating(request):
         book = dictation.models.Book.objects.get(id=bookId)
     if pressId:
         press = dictation.models.Press.objects.get(id=pressId)
-    print('dictate lesson: %s' % lesson)
-    print('dictate unit: %s' % unit)
-    test = models.Test.tests.create(press,book,unit,lesson)
+    test = models.Test.tests.create(press, book, unit, lesson)
     test.save()
     request.session['testId'] = test.id
-    return render(request,'dictation/dictating.html')
 
-def qryVoice(request):
-    print('qryVoice...')
-    aWords = request.session['words']
-    print(aWords)
-    print('make voice...')
+    aWordId = request.POST.get('word', None)
+    # aWords = request.session['words']
+    aWords = dictation.models.Word.objects.filter(pk__in=aWordId)
+    jsonWords = jsonArraySet(aWords, ['id', 'word'])
+    print(jsonWords)
     voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
     builder = voicebuilder.VoiceBuilder(voicePath)
-    builder.builderVoice(aWords)
+    builder.builderVoice(jsonWords)
     # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
-    dRes = {'words': aWords}
+    dRes = {'words': jsonWords}
+
+
+
     return JsonResponse(dRes)
 
 def qryTestWords(request):

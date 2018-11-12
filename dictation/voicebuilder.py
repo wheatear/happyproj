@@ -119,6 +119,30 @@ class VoiceBuilder(object):
                 aWd.append(voiceFile)
         return aWords
 
+    def getVoice(self, aWords):
+        for aWd in aWords:
+            print(aWd)
+            word = aWd[1]
+            aWd.append(self.makePinyin(word))
+            if len(aWd) > 3 and aWd[3]:
+                continue
+            wordKey = word.encode('unicode_escape').replace(b'\\u', b'').decode()
+            voiceFile = '%s_%d%d%d%d.mp3' % (wordKey, self.dictateSet['per'], self.dictateSet['pit'], self.dictateSet['spd'], self.dictateSet['vol'])
+            fullFile = os.path.join(self.voicePath, voiceFile)
+            i = 0
+            fileOk = True
+            while not os.path.isfile(fullFile):
+                i += 1
+                if i>10:
+                    fileOk = False
+                    break
+                time.sleep(1)
+            if fileOk:
+                aWd.append(voiceFile)
+            else:
+                aWd.append(None)
+        return aWords
+
     def prepareVoice(self, word, voiceFile):
         voice = self.client.getVoice(word, self.dictateSet)
         if voice is None:

@@ -22,6 +22,22 @@
     font-size:0;
 }
 
+.headerleft{
+    float:left;
+    text-align: center;
+}
+
+.headerright{
+    float:right;
+    text-align: center;
+}
+
+.half{
+    width:50%;
+    text-align: center;
+    /*background-color: #ffc107;*/
+}
+
 #dictype{
     float:left;
     font-size:16px;
@@ -118,7 +134,7 @@ ul{
     text-align:center;
 }
 
-.footer_part div{
+.footer_part .rootnav{
     float:left;
     width:25%;
 }

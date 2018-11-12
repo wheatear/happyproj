@@ -61,6 +61,10 @@ $(function(){
     });
 
     $('#wrongword').click(function(){
+        $(this).removeClass('btn-default');
+        $(this).addClass('btn-primary');
+        $('#newword').removeClass('btn-primary');
+        $('#newword').addClass('btn-default');
         aWrongWd = $('.wrongword');
         aWrongWd.addClass('show');
         aWrongWd.removeClass('hide');
@@ -70,6 +74,10 @@ $(function(){
     });
 
     $('#newword').click(function(){
+        $(this).removeClass('btn-default');
+        $(this).addClass('btn-primary');
+        $('#wrongword').removeClass('btn-primary');
+        $('#wrongword').addClass('btn-default');
         aWrongWd = $('.wrongword');
         aWrongWd.addClass('hide');
         aWrongWd.removeClass('show');
