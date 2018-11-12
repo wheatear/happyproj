@@ -204,6 +204,7 @@ def dictate(request):
     test = models.Test.tests.create(press, book, unit, lesson)
     test.save()
     request.session['testId'] = test.id
+    print('dictate test: %s' % test.id)
     return JsonResponse({'response':'ok'})
 
     # # aWordId = request.POST.get('word', None)

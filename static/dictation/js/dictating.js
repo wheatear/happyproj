@@ -34,7 +34,7 @@ $(function(){
 
     $.get('/dictation/makeVoice/', function(dic){
         aWords = dic.words;
-        alert(aWords);
+        // alert(aWords);
         makePlayList(aWords);
         // alert(aPlayList);
         playerSet(player,aPlayList);
@@ -86,6 +86,7 @@ $(function(){
     $('#checkWord').click(function () {
         fillWords(aWords,hWords);
         hSave.removeAttr("disabled");
+        $.get('/dictation/dictate/')
         // $('.word').click(function(){
         //     // $(this).attr({'code':1});
         //     // alert($(this).attr('code'));
