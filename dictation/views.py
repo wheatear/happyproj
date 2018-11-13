@@ -170,7 +170,12 @@ def saveLessonWords(request):
     lessonId = request.POST.get('lesson', None)
     sWord = request.POST.get('words', None)
     aWords = sWord.split()
-        # dictation.models.Word.objects.filter(lesson=lessonId)
+    print('lessonid: %s' % lessonId)
+    oldWords = dictation.models.Word.objects.filter(lesson=lessonId)
+    print('old words: %s' % oldWords)
+    # oldWords.all().delete()
+    for w in oldWords:
+        w.delete()
     for wd in aWords:
         lswd = models.Word.objects.create(lessonId, wd)
         lswd.save()
