@@ -4,7 +4,7 @@ var aPlayList=[];
 var player;
 var indx=0;
 var playState=1;   //0: paused   1:playing   2:stop
-var repeat=0;
+// var repeat=0;
 var wordNum=2;
 var hWords;
 
@@ -14,11 +14,24 @@ $(function(){
         // alert('get words')
         hWords = $('#words');
         fillWords(aWords,hWords);
+
+        $.get('/dictation/makeVoice/', function(dic){
+            aWords = dic.words;
+            // alert(aWords);
+            makePlayList(aWords);
+            // alert(aPlayList);
+            playerSet(player,aPlayList);
+            hPlay.removeAttr("disabled");
+            hPlay.html('开始听写');
+            // hPlay.disabled = false;
+        });
     });
     hDisp = $('#dispWord');
     hPlay = $('#toPlay');
     hCheck = $('#checkWord');
     hSave = $('#saveTest');
+
+    var repeat=0;
 
     hPlay.html('准备听写');
     hPlay.attr("disabled","true");
@@ -26,23 +39,13 @@ $(function(){
     hCheck.attr("disabled","true");
     hSave.attr("disabled","true");
 
-    $('.word').click(function(){
-        // $(this).attr({'code':1});
-        // alert($(this).attr('code'));
-        $(this).toggleClass("se");
-    });
+    // $('.word').click(function(){
+    //     // $(this).attr({'code':1});
+    //     // alert($(this).attr('code'));
+    //     $(this).toggleClass("se");
+    // });
 
-    $.get('/dictation/makeVoice/', function(dic){
-        aWords = dic.words;
-        // alert(aWords);
-        makePlayList(aWords);
-        // alert(aPlayList);
-        playerSet(player,aPlayList);
-        // hPlay = $('#toPlay');
-        hPlay.removeAttr("disabled");
-        hPlay.html('开始听写');
-        // hPlay.disabled = false;
-    });
+
 
     player = cyberplayer("playercontainer");
     $('#toPlay').click(function(){
@@ -145,6 +148,7 @@ $(function(){
             ak: "a0dbd2b027ee45c0b6bfdf548e519727" // 公有云平台注册即可获得accessKey
         });
 
+
         ply.onComplete(function(event){
             slpTime=3000*wordNum;
             sleep(slpTime);
@@ -158,6 +162,7 @@ $(function(){
                 repeat = 0;
             }
         });
+
 
         ply.onPlay(function(event){
             // alert('play...' );
@@ -267,6 +272,9 @@ $(function(){
         window.location.href = '/dictation/checkwords/'
     });
 
+    $('#home').click(function(){
+        window.location.href = '/dictation/'
+    });
     // player.onPlaylistItem(function(event){
     //             //alert("onPlaylistItem");
     //            // player.stop()

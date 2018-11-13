@@ -14,5 +14,8 @@ urlpatterns = [
     url(r'^makeVoice/$', views.makeVoice),
     url(r'^qryTestWords/$', views.qryTestWords),
     url(r'^saveTest/$', views.saveTest),
+    url(r'^wordimport/$', views.wordImport),
+    url(r'^qryLsWords/$', views.qryLessonWords),
+    url(r'^saveLsWords/$', views.saveLessonWords),
     url(r'^tabtest/$', views.tabtest),
 ]

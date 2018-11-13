@@ -40,21 +40,58 @@ class Lesson(models.Model):
     def __str__(self):
         return '%s %s' % (self.lessoncode, self.lessonname)
 
+class WordManager(models.Manager):
+    def create(self,lessonId, word):
+        wd = self.model()
+        wd.lesson_id = lessonId
+        wd.word = word
+        return wd
+
 class Word(models.Model):
     id=models.AutoField(primary_key=True)
     word=models.CharField(max_length=20)
     lesson=models.ForeignKey(Lesson,None,db_column='lessonid')
+    objects = WordManager()
     class Meta:
         db_table='lw_word'
     def __str__(self):
         return self.word
 
+class ChoiceSelectedManager(models.Manager):
+    def create(self,name,code):
+        chse = self.model()
+        chse.choicename = name
+        chse.setChoicecode(name, code)
+        # if name == 'dictype':
+        #     chse.choicevalue = code
+        #     if code == 'newword':
+        #         chse.choicecode = 1
+        #     elif code == 'wrongword':
+        #         chse.choicecode = 2
+        #     else:
+        #         chse.choicecode = 3
+        # else:
+        #     chse.choicecode = code
+        return chse
+
 class ChoiceSelected(models.Model):
-    choicename=models.CharField(max_length=20)
+    choicename=models.CharField(max_length=20,unique=True)
     choicevalue=models.CharField(max_length=100, null=True, blank=True)
     choicecode = models.IntegerField(null=True, blank=True)
     class Meta:
         db_table='lw_choiceselected'
+    objects = ChoiceSelectedManager()
+    def setChoicecode(self,name,code):
+        if name == 'dictype':
+            self.choicevalue = code
+            if code == 'newword':
+                self.choicecode = 1
+            elif code == 'wrongword':
+                self.choicecode = 2
+            else:
+                self.choicecode = 3
+        else:
+            self.choicecode = code
 
 class TestManager(models.Manager):
     def create(self,press,book,unit=None,lesson=None):

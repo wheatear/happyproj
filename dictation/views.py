@@ -19,6 +19,7 @@ def index(request):
 
 def initQry(request):
     choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.all(), ['choicename','choicecode'])
+    request.session['choiceSelected'] = choiceSelected
     print(choiceSelected)
     dRes = {'choiceSelected':choiceSelected}
     press = jsonArraySet(dictation.models.Press.objects.all())
@@ -103,32 +104,44 @@ def dispWords(request):
     testId = request.GET.get('test', None)
     dictype = request.GET.get('dictype', None)
     study = request.GET.get('study', None)
+    choiceSelected = request.session['choiceSelected']
+    # choiceSelected = {}
     if pressId:
-        request.session['pressId'] = pressId
+        # request.session['pressId'] = pressId
+        choiceSelected['press'] = pressId
     if bookId:
-        request.session['bookId'] = bookId
+        # request.session['bookId'] = bookId
+        choiceSelected['book'] = bookId
     if unitId:
-        request.session['unitId'] = unitId
+        # request.session['unitId'] = unitId
+        choiceSelected['unit'] = unitId
     if lessonId:
-        request.session['lessionId'] = lessonId
+        # request.session['lessionId'] = lessonId
+        choiceSelected['lesson'] = lessonId
     if testId:
-        request.session['testId'] = testId
+        # request.session['testId'] = testId
+        choiceSelected['test'] = testId
     if dictype:
-        request.session['dictype'] = dictype
+        # request.session['dictype'] = dictype
+        choiceSelected['dictype'] = dictype
+    # choiceSelected['lession'] = lessonId
+    request.session['choiceSelected'] = choiceSelected
+    saveChoiceSelected(choiceSelected)
     return render(request, 'dictation/dictating.html')
 
 def qryWords(request):
-    dicType = request.session['dictype']
+    choiceSelected = request.session['choiceSelected']
+    dicType = choiceSelected['dictype']
     print('dictype: %s' % dicType)
     if dicType == 'newword':
-        lessonId = request.session['lessionId']
+        lessonId = choiceSelected['lesson']
         print(lessonId)
         aWords = dictation.models.Word.objects.filter(lesson=lessonId)
         jsonWords = jsonArraySet(aWords, ['id', 'word'])
         # request.session['words'] = jsonWords
         # print(jsonWords)
     elif dicType == 'wrongword':
-        testId = request.session['testId']
+        testId = choiceSelected['test']
         print('testid: %s' % testId)
         aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True,testword__test__exact=testId)
         jsonWords = jsonArraySet(aWords, ['id', 'word'])
@@ -140,6 +153,40 @@ def qryWords(request):
     print(jsonWords)
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
+
+def qryLessonWords(request):
+    lessonId = request.GET.get('lesson', None)
+    aWords = dictation.models.Word.objects.filter(lesson=lessonId)
+    sWord = ''
+    for wd in aWords:
+        if sWord == '':
+            sWord = wd
+        else:
+            sWord = '%s %s' % (sWord, wd)
+    print(sWord)
+    return JsonResponse({'words': sWord})
+
+def saveLessonWords(request):
+    lessonId = request.POST.get('lesson', None)
+    sWord = request.POST.get('words', None)
+    aWords = sWord.split()
+        # dictation.models.Word.objects.filter(lesson=lessonId)
+    for wd in aWords:
+        lswd = models.Word.objects.create(lessonId, wd)
+        lswd.save()
+    return JsonResponse({'response': 'ok'})
+
+def saveChoiceSelected(choiceSelected):
+    print('save choice selected...')
+    for k in choiceSelected:
+        chses = dictation.models.ChoiceSelected.objects.filter(choicename=k)
+        if chses:
+            chse = chses[0]
+            chse.setChoicecode(k,choiceSelected[k])
+        else:
+            chse = models.ChoiceSelected.objects.create(k, choiceSelected[k])
+        print('name: %s  value: %s   code: %s' % (chse.choicename,chse.choicevalue,chse.choicecode) )
+        chse.save()
 
 # def checkWords(request):
 #     return render(request, 'dictation/checkwords.html')
@@ -172,7 +219,7 @@ def makeVoice(request):
     aWords = request.session['words']
 
     # request.session['words'] = None
-    print(aWords)
+    # print(aWords)
     voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
     builder = voicebuilder.VoiceBuilder(voicePath)
     builder.builderVoice(aWords)
@@ -242,3 +289,6 @@ def saveTest(request):
 
 def tabtest(request):
     return render(request,'dictation/tabtest.html')
+
+def wordImport(request):
+    return render(request, 'dictation/wordimport.html')
