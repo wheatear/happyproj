@@ -40,18 +40,18 @@ class Lesson(models.Model):
     def __str__(self):
         return '%s %s' % (self.lessoncode, self.lessonname)
 
-class WordManager(models.Manager):
-    def create(self,lessonId, word):
-        wd = self.model()
-        wd.lesson_id = lessonId
-        wd.word = word
-        return wd
+# class WordManager(models.Manager):
+#     def create(self,lessonId, word):
+#         wd = self.model()
+#         wd.lesson_id = lessonId
+#         wd.word = word
+#         return wd
 
 class Word(models.Model):
     id=models.AutoField(primary_key=True)
     word=models.CharField(max_length=20)
-    lesson=models.ForeignKey(Lesson,None,db_column='lessonid')
-    objects = WordManager()
+    lesson=models.ForeignKey(Lesson,on_delete=models.CASCADE,db_column='lessonid')
+    # objects = WordManager()
     class Meta:
         db_table='lw_word'
     def __str__(self):

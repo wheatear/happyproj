@@ -50,7 +50,7 @@ $(function(){
             sWord = dic.words;
             alert(sWord);
             // hlsword.innerHTML=sWord;
-            hlsword.html(sWord);
+            hlsword.val(sWord);
         })
     }
 
@@ -67,7 +67,7 @@ $(function(){
     $('#save').click(function(){
         // alert('unit changed');
         hLsword = $('#lessonword');
-        sWord=hLsword.html();
+        sWord=hLsword.val();
         lessonId = $('#lesson').val();
         data = {'lesson':lessonId, 'words':sWord};
         $.post('/dictation/saveLsWords/',data);

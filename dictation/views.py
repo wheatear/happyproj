@@ -174,10 +174,12 @@ def saveLessonWords(request):
     oldWords = dictation.models.Word.objects.filter(lesson=lessonId)
     print('old words: %s' % oldWords)
     # oldWords.all().delete()
-    for w in oldWords:
-        w.delete()
+    oldWords.delete()
+    # for w in oldWords:
+    #     w.delete()
     for wd in aWords:
-        lswd = models.Word.objects.create(lessonId, wd)
+        # lswd = models.Word.objects.create(lessonId, wd)
+        lswd = models.Word(lesson_id=lessonId, word=wd)
         lswd.save()
     return JsonResponse({'response': 'ok'})
 
