@@ -17,6 +17,7 @@ $(function(){
 
         $.get('/dictation/makeVoice/', function(dic){
             aWords = dic.words;
+            // ['id', 'word', 'pinyin', 'voice']
             // alert(aWords);
             makePlayList(aWords);
             // alert(aPlayList);
@@ -99,7 +100,7 @@ $(function(){
 
     $('#saveTest').click(function () {
         wdResult = {};
-        $('.word').each(function(i,w){
+        $('#words > label').each(function(i,w){
             // alert(w.id);
             // alert(w.className);
             if(w.className.indexOf('se') >= 0) {
@@ -170,12 +171,15 @@ $(function(){
             if(repeat==0 ) {
                 var i = ply.getPlaylistIndex();
                 var word = aWords[i];
+                // ['id', 'word', 'pinyin', 'voice']
                 code = word[0];
                 pinyin = word[2];
+                plen=pinyin.length;
+
                 dispName = pinyin.join(' ');
                 // alert(dispName)
                 wordNum=pinyin.length;
-                hWords.append('<label class="word un" code='+code+'>'+dispName+'</label>');
+                hWords.append('<label class="py'+plen+' un" code='+code+'>'+dispName+'</label>');
                 // $('#pinyin').innerHTML=dispName;
             }
         });
@@ -295,9 +299,20 @@ $(function(){
             var code = aWd[0];
             // alert(aWd);
             var dispName = aWd[1];
-            hWords.append('<label class="word un" id='+code+'>'+dispName+'</label>');
+            plen=dispName.length;
+
+            hWords.append('<label class="word'+plen+' un" id='+code+'>'+dispName+'</label>');
         });
         $('.word').click(function(){
+            $(this).toggleClass("se");
+        })
+        $('.word2').click(function(){
+            $(this).toggleClass("se");
+        })
+        $('.word4').click(function(){
+            $(this).toggleClass("se");
+        })
+        $('.word6').click(function(){
             $(this).toggleClass("se");
         })
     }

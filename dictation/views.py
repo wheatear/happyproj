@@ -242,6 +242,7 @@ def makeVoice(request):
     # print(aWords)
     voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
     builder = voicebuilder.VoiceBuilder(voicePath)
+    # ['id', 'word', 'pinyin', 'voice']
     builder.builderVoice(aWords)
     # request.session['words'] = aWords
     request.session['words'] = None
