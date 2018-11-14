@@ -170,17 +170,30 @@ def saveLessonWords(request):
     lessonId = request.POST.get('lesson', None)
     sWord = request.POST.get('words', None)
     aWords = sWord.split()
-    print('lessonid: %s' % lessonId)
-    oldWords = dictation.models.Word.objects.filter(lesson=lessonId)
-    print('old words: %s' % oldWords)
-    # oldWords.all().delete()
-    oldWords.delete()
+    print('add lessonid: %s' % lessonId)
+    print('add word: %s' % sWord)
+    # oldWords = dictation.models.Word.objects.filter(lesson=lessonId)
+    # print('old words: %s' % oldWords)
+    # # oldWords.all().delete()
+    # oldWords.delete()
     # for w in oldWords:
     #     w.delete()
     for wd in aWords:
         # lswd = models.Word.objects.create(lessonId, wd)
         lswd = models.Word(lesson_id=lessonId, word=wd)
         lswd.save()
+    return JsonResponse({'response': 'ok'})
+
+def delLessonWords(request):
+    lessonId = request.POST.get('lesson', None)
+    sWord = request.POST.get('words', None)
+    aWords = sWord.split()
+    print('delete lessonid: %s' % lessonId)
+    print('delete word: %s' % sWord)
+    for wd in aWords:
+        # lswd = models.Word.objects.create(lessonId, wd)
+        lswd = models.Word.objects.filter(lesson_id=lessonId, word=wd)
+        lswd.delete()
     return JsonResponse({'response': 'ok'})
 
 def saveChoiceSelected(choiceSelected):

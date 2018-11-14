@@ -32,7 +32,7 @@ $(function(){
         unitCode = $(this).val();
         aLesson.push(unitCode);
         // alert(aLesson);
-        qry = 'qryLesson/?unit='+unitCode;
+        qry = '/dictation/qryLesson/?unit='+unitCode;
         // alert(qry);
         $.get(qry,function(dic){
             aLesson = dic.lesson;
@@ -48,7 +48,7 @@ $(function(){
         // alert(qry);
         $.get(qry,function(dic){
             sWord = dic.words;
-            alert(sWord);
+            // alert(sWord);
             // hlsword.innerHTML=sWord;
             hlsword.val(sWord);
         })
@@ -71,6 +71,16 @@ $(function(){
         lessonId = $('#lesson').val();
         data = {'lesson':lessonId, 'words':sWord};
         $.post('/dictation/saveLsWords/',data);
+    });
+
+    $('#delete').click(function(){
+        // alert('unit changed');
+        hLsword = $('#lessonword');
+        sWord=hLsword.val();
+        lessonId = $('#lesson').val();
+        data = {'lesson':lessonId, 'words':sWord};
+        $.post('/dictation/delLsWords/',data);
+        hLsword.val('');
     });
 
     //fill select

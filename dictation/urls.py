@@ -17,5 +17,6 @@ urlpatterns = [
     url(r'^wordimport/$', views.wordImport),
     url(r'^qryLsWords/$', views.qryLessonWords),
     url(r'^saveLsWords/$', views.saveLessonWords),
+    url(r'^delLsWords/$', views.delLessonWords),
     url(r'^tabtest/$', views.tabtest),
 ]
