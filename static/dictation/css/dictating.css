@@ -1,11 +1,31 @@
 
-.word{
+.word,.word1,.word2,.word3,.word4,.word5,.word6,.py1,.py2,.py3,.py4,.py5,.py6{
     border:1px solid red;
     float:left;
-    width:80px;
+    /*width:80px;*/
+    height:32px;
     margin:5px 10px;
     text-align:center;
     font:20px/30px '微软雅黑';
+    overflow:auto;
+}
+.word1,.word2{
+    width:80px;
+}
+.word3,.word4{
+    width:180px;
+}
+.word5,.word6{
+    width:280px;
+}
+.py1,.py2{
+    width:120px;
+}
+.py3,.py4{
+    width:260px;
+}
+.py5,.py6{
+    width:400px;
 }
 
 .un{

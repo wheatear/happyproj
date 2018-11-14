@@ -31,7 +31,7 @@
 
     <div class="center_part">
 
-        <form class="ch" action="dispwords/">
+        <form class="ch" id="choice" action="dispwords/">
             <div class="form-group">
                 <label>出版社</label>
                 <select class="form-control" name="press" id="press">
@@ -83,15 +83,15 @@
                     <option value ="前50">前50</option>
                 </select>
             </div>
-<div class="createpanel clearfix">
-            <div><input class="btn btn-default" type="submit" name="study" value="复习" id="study"></div>
-            <div><input class="btn btn-default" type="submit" name="dictate" value="听写" id="dictate"></div>
-        </div>
+
         </form>
 
     </div>
     <div class="footer_part clearfix">
-
+        <div class="createpanel clearfix">
+            <div><input class="btn btn-default" form="choice" type="submit" name="study" value="复习" id="study"></div>
+            <div><input class="btn btn-default" form="choice" type="submit" name="dictate" value="听写" id="dictate"></div>
+        </div>
         <div>
             <div><button class="footbtn rootnav" id="create">创建</button></div>
             <div><button class="footbtn rootnav" id="dictation">听写</button></div>

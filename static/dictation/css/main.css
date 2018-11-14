@@ -124,7 +124,7 @@ ul{
 }
 
 .footer_part {
-    /*height:40px;*/
+    height:80px;
     position: absolute;
     left: 0;
     bottom: 0;
