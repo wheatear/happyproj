@@ -7,48 +7,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/static/dictation/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/dictation/css/bootstrap.min.css">
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="/static/dictation/js/jquery-3.3.1.min.js"></script>
     <script src="/static/dictation/js/popper.min.js" ></script>
-    <script src="/static/dictation/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/static/dictation/js/bootstrap.min.js"></script>
     <!-- player JS -->
     <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
-    <link rel="stylesheet" type="text/css" href="/static/dictation/css/dispwords.css">
+{#    <link rel="stylesheet" type="text/css" href="/static/dictation/css/dispwords.css">#}
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/dictating.css">
     <script type="text/javascript" src="/static/dictation/js/dictating.js"></script>
 </head>
 <body>
-    <div class="main_cont clearfix">
-        <div class="header_part">
-            <button class="btn btn-primary" id="dictype">生词</button>
-            <span>听写词语</span>
-            <a class="btn btn-default" id="next" href="/dictation/dispwords/">下一步</a>
-        </div>
-        <div class="center_part">
-
-            <div  id="words">
-
-            </div>
-            <div id="play"><div class="cy" id="playercontainer"></div></div>
-            <div class="playerpanel clearfix">
-                <div><button type="button" class="playerbutton" id="toPlay">开始听写</button></div>
-                <div><button type="button" class="playerbutton" id="nextWord">下一个</button></div>
-                <div><button type="button" class="playerbutton" id="prevWord">上一个</button></div>
-                <div><button type="button" class="playerbutton" id="pause">暂停/恢复</button></div>
-                <div><button type="button" class="playerbutton" id="stop">结束听写</button></div>
-            </div>
-        </div>
-        <div class="footer_part clearfix">
-            <div><button class="footbtn" id="create">创建</button></div>
-            <div><button class="footbtn" id="dictation">听写</button></div>
-            <div><button class="footbtn" id="dictation1">听写</button></div>
-            <div><button class="footbtn" id="record">记录</button></div>
-        </div>
-
+<div class="main_cont clearfix">
+    <div class="header_part">
+        <button class="btn btn-default headerleft" id="home">开始</button>
+        <span class="caption" id="caption">词语听写</span>
+        {#            <a class="btn btn-default" id="next" href="/dictation/checkwords/">下一步</a>#}
+{#        <button class="btn btn-default" id="next">下一步</button>#}
     </div>
+    <div class="center_part">
+
+        <div  id="words">
+
+        </div>
+        <div id="play"><div class="cy" id="playercontainer"></div></div>
+        <div class="playerpanel clearfix">
+            <div><button type="button" class="playerbutton" id="prevWord">上一个</button></div>
+            <div><button type="button" class="playerbutton" id="nextWord">下一个</button></div>
+            <div><button type="button" class="playerbutton" id="pause">暂停/恢复</button></div>
+            <div><button type="button" class="playerbutton" id="stop">结束听写</button></div>
+        </div>
+    </div>
+    <div class="footer_part clearfix">
+        <div><button type="button" class="btn btn-default rootnav" id="dispWord">显示词语</button></div>
+        <div><button type="button" class="btn btn-default rootnav" id="toPlay">开始听写</button></div>
+        <div><button type="button" class="btn btn-default rootnav" id="checkWord">检查词语</button></div>
+        <div><button type="button" class="btn btn-default rootnav" id="saveTest">生成结果</button></div>
+
+{#        <div><button class="footbtn" id="create">创建</button></div>#}
+{#        <div><button class="footbtn" id="dictation">听写</button></div>#}
+{#        <div><button class="footbtn" id="dictation1">听写</button></div>#}
+{#        <div><button class="footbtn" id="record">记录</button></div>#}
+    </div>
+
+</div>
 </body>
 </html>

@@ -7,14 +7,19 @@ import os
 import dictation
 import logging
 from dictation import voicebuilder
+from dictation import models
 
 
 # Create your views here.
+# voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
+# builder = voicebuilder.VoiceBuilder(voicePath)
+
 def index(request):
     return render(request,'dictation/index.html')
 
 def initQry(request):
     choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.all(), ['choicename','choicecode'])
+    request.session['choiceSelected'] = choiceSelected
     print(choiceSelected)
     dRes = {'choiceSelected':choiceSelected}
     press = jsonArraySet(dictation.models.Press.objects.all())
@@ -29,6 +34,12 @@ def initQry(request):
     lesson = jsonArraySetLesson(dictation.models.Lesson.objects.filter(unit=selectedUnit))
     dRes['lesson'] = lesson
     selectedLesson = choiceSelected['lesson']
+    test = jsonArraySet(dictation.models.Test.tests.filter(lesson=selectedLesson),['id', 'testname'])
+    dRes['test'] = test
+    testTime = jsonArraySet(dictation.models.Choice.objects.filter(type='time'))
+    dRes['testtime'] = testTime
+    wordScope = jsonArraySet(dictation.models.Choice.objects.filter(type='scope'))
+    dRes['wordscope'] = wordScope
     return JsonResponse(dRes)
 
 def jsonDict(aQrySet,aFields=None):
@@ -77,38 +88,227 @@ def qryLesson(request):
     dRes = {'lesson':lesson}
     return JsonResponse(dRes)
 
+def qryTest(request):
+    lessonId = request.GET['lesson']
+    print('query test by lessonid: %s' %  lessonId)
+    test = jsonArraySet(dictation.models.Test.tests.filter(lesson=lessonId),['id', 'testname'])
+    dRes = {'test':test}
+    return JsonResponse(dRes)
+
 def dispWords(request):
-    lessonId = request.GET.get('lesson',None)
+    pressId = request.GET.get('press', None)
+    bookId = request.GET.get('book', None)
+    unitId = request.GET.get('unit', None)
+    lessonId = request.GET.get('lesson', None)
+    testtime = request.GET.get('testtime', None)
+    testId = request.GET.get('test', None)
+    dictype = request.GET.get('dictype', None)
+    study = request.GET.get('study', None)
+    choiceSelected = request.session['choiceSelected']
+    # choiceSelected = {}
+    if pressId:
+        # request.session['pressId'] = pressId
+        choiceSelected['press'] = pressId
+    if bookId:
+        # request.session['bookId'] = bookId
+        choiceSelected['book'] = bookId
+    if unitId:
+        # request.session['unitId'] = unitId
+        choiceSelected['unit'] = unitId
     if lessonId:
-        request.session['lessionId'] = lessonId
-    return render(request, 'dictation/dispwords.html')
+        # request.session['lessionId'] = lessonId
+        choiceSelected['lesson'] = lessonId
+    if testId:
+        # request.session['testId'] = testId
+        choiceSelected['test'] = testId
+    if dictype:
+        # request.session['dictype'] = dictype
+        choiceSelected['dictype'] = dictype
+    # choiceSelected['lession'] = lessonId
+    request.session['choiceSelected'] = choiceSelected
+    saveChoiceSelected(choiceSelected)
+    return render(request, 'dictation/dictating.html')
 
 def qryWords(request):
-    lessonId = request.session['lessionId']
-    print(lessonId)
-    aWords = dictation.models.Word.objects.filter(lesson=lessonId)
-    jsonWords = jsonArraySet(aWords, ['id', 'word'])
+    choiceSelected = request.session['choiceSelected']
+    dicType = choiceSelected['dictype']
+    print('dictype: %s' % dicType)
+    if dicType == 'newword':
+        lessonId = choiceSelected['lesson']
+        print(lessonId)
+        aWords = dictation.models.Word.objects.filter(lesson=lessonId)
+        jsonWords = jsonArraySet(aWords, ['id', 'word'])
+        # request.session['words'] = jsonWords
+        # print(jsonWords)
+    elif dicType == 'wrongword':
+        testId = choiceSelected['test']
+        print('testid: %s' % testId)
+        aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True,testword__test__exact=testId)
+        jsonWords = jsonArraySet(aWords, ['id', 'word'])
+        print(jsonWords)
+    voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
+    # builder = voicebuilder.VoiceBuilder(voicePath)
+    # builder.builderPinyin(jsonWords)
     request.session['words'] = jsonWords
     print(jsonWords)
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
 
-def dictating(request):
-    return render(request,'dictation/dictating.html')
+def qryLessonWords(request):
+    lessonId = request.GET.get('lesson', None)
+    aWords = dictation.models.Word.objects.filter(lesson=lessonId)
+    sWord = ''
+    for wd in aWords:
+        if sWord == '':
+            sWord = wd
+        else:
+            sWord = '%s %s' % (sWord, wd)
+    print(sWord)
+    return JsonResponse({'words': sWord})
 
-def qryVoice(request):
-    print('qryVoice...')
+def saveLessonWords(request):
+    lessonId = request.POST.get('lesson', None)
+    sWord = request.POST.get('words', None)
+    aWords = sWord.split()
+    print('add lessonid: %s' % lessonId)
+    print('add word: %s' % sWord)
+    # oldWords = dictation.models.Word.objects.filter(lesson=lessonId)
+    # print('old words: %s' % oldWords)
+    # # oldWords.all().delete()
+    # oldWords.delete()
+    # for w in oldWords:
+    #     w.delete()
+    for wd in aWords:
+        # lswd = models.Word.objects.create(lessonId, wd)
+        lswd = models.Word(lesson_id=lessonId, word=wd)
+        lswd.save()
+    return JsonResponse({'response': 'ok'})
+
+def delLessonWords(request):
+    lessonId = request.POST.get('lesson', None)
+    sWord = request.POST.get('words', None)
+    aWords = sWord.split()
+    print('delete lessonid: %s' % lessonId)
+    print('delete word: %s' % sWord)
+    for wd in aWords:
+        # lswd = models.Word.objects.create(lessonId, wd)
+        lswd = models.Word.objects.filter(lesson_id=lessonId, word=wd)
+        lswd.delete()
+    return JsonResponse({'response': 'ok'})
+
+def saveChoiceSelected(choiceSelected):
+    print('save choice selected...')
+    for k in choiceSelected:
+        chses = dictation.models.ChoiceSelected.objects.filter(choicename=k)
+        if chses:
+            chse = chses[0]
+            chse.setChoicecode(k,choiceSelected[k])
+        else:
+            chse = models.ChoiceSelected.objects.create(k, choiceSelected[k])
+        print('name: %s  value: %s   code: %s' % (chse.choicename,chse.choicevalue,chse.choicecode) )
+        chse.save()
+
+# def checkWords(request):
+#     return render(request, 'dictation/checkwords.html')
+
+# def dictating(request):
+#     lessonId = request.session['lessionId']
+#     unitId = request.session['unitId']
+#     bookId = request.session['bookId']
+#     pressId = request.session['pressId']
+#
+#     if lessonId:
+#         lesson = dictation.models.Lesson.objects.get(id=lessonId)
+#         print('dictate lesson: %s' % lessonId)
+#     if unitId:
+#         unit = dictation.models.Unit.objects.get(id=unitId)
+#         print('dictate unit: %s' % unitId)
+#     if bookId:
+#         book = dictation.models.Book.objects.get(id=bookId)
+#     if pressId:
+#         press = dictation.models.Press.objects.get(id=pressId)
+#     print('dictate lesson: %s' % lesson)
+#     print('dictate unit: %s' % unit)
+#     test = models.Test.tests.create(press,book,unit,lesson)
+#     test.save()
+#     request.session['testId'] = test.id
+#     return render(request,'dictation/dictating.html')
+
+def makeVoice(request):
+    print('make word voice...')
     aWords = request.session['words']
-    print(aWords)
-    print('make voice...')
+
+    # request.session['words'] = None
+    # print(aWords)
     voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
     builder = voicebuilder.VoiceBuilder(voicePath)
     builder.builderVoice(aWords)
+    # request.session['words'] = aWords
+    request.session['words'] = None
+    print('make voice ok.')
+    print(aWords)
     # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
+    dRes = {'words': aWords}
+    return JsonResponse(dRes)
+    # return JsonResponse({'response':'ok'})
+
+def dictate(request):
+    print('dictate')
+    lessonId = request.session['lessionId']
+    unitId = request.session['unitId']
+    bookId = request.session['bookId']
+    pressId = request.session['pressId']
+    if lessonId:
+        lesson = dictation.models.Lesson.objects.get(id=lessonId)
+        print('dictate lesson: %s' % lessonId)
+    if unitId:
+        unit = dictation.models.Unit.objects.get(id=unitId)
+        print('dictate unit: %s' % unitId)
+    if bookId:
+        book = dictation.models.Book.objects.get(id=bookId)
+    if pressId:
+        press = dictation.models.Press.objects.get(id=pressId)
+    test = models.Test.tests.create(press, book, unit, lesson)
+    test.save()
+    request.session['testId'] = test.id
+    print('dictate test: %s' % test.id)
+    return JsonResponse({'response':'ok'})
+
+    # # aWordId = request.POST.get('word', None)
+    # # print('dictate words: %s' % aWordId)
+    # # # aWords = request.session['words']
+    # # aWords = dictation.models.Word.objects.filter(pk__in=aWordId)
+    # jsonWords = request.session['words']
+    # # jsonWords = jsonArraySet(aWords, ['id', 'word'])
+    # print(jsonWords)
+    # # voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
+    # # builder = voicebuilder.VoiceBuilder(voicePath)
+    # # builder.getVoice(jsonWords)
+    # # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
+    # dRes = {'words': jsonWords}
+    # return JsonResponse(dRes)
+
+def qryTestWords(request):
+    aWords = request.session['words']
     dRes = {'words': aWords}
     return JsonResponse(dRes)
 
 def dispPinyin(request):
     return render(request,'dictation/index.html')
 
+def saveTest(request):
+    testid = request.session['testId']
+    # testRlt = request.POST.get('test[]', None)
+    print('savetest %s' % testid)
+    testRlt = request.POST
+    print('save test words %s' % testRlt)
+    for w in testRlt:
+        tstWd = models.TestWord.objects.create(testid, w, testRlt[w])
+        tstWd.save()
+    return JsonResponse({'response':'ok'})
 
+def tabtest(request):
+    return render(request,'dictation/tabtest.html')
+
+def wordImport(request):
+    return render(request, 'dictation/wordimport.html')

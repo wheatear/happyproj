@@ -17,16 +17,17 @@
     {#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
 
     <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
-    <script type="text/javascript" src="/static/dictation/js/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/dictation/css/wordimport.css">
+    <script type="text/javascript" src="/static/dictation/js/wordimport.js"></script>
 
 
 </head>
 <body>
 <div class="main_cont clearfix">
     <div class="header_part">
-        <div class="headerleft half "><button class="btn btn-primary " id="newword">生词</button></div>
-        {#        <span>选择课文</span>#}
-        <div class="headerright half "><button class="btn btn-default " id="wrongword">错词</button></div>
+        {#        <div class="headerleft half "><button class="btn btn-primary " id="newword">生词</button></div>#}
+        <span>词语导入</span>
+        {#        <div class="headerright half "><button class="btn btn-default " id="wrongword">错词</button></div>#}
     </div>
 
     <div class="center_part">
@@ -55,46 +56,24 @@
                 <select class="form-control" name="lesson" id="lesson">
                     <option value =""></option>
                 </select>
-{#                <div id="lesson">#}
-{#                    <label class="lsradio">第1课<input type="radio" name="lesson" value="1" checked></label>#}
-{#                    <br>#}
-{#                    <label class="lsradio">第2课<input type="radio" name="lesson" value="2" checked></label>#}
-{#                    <br>#}
-{#                </div>#}
+
             </div>
-            <div class="form-group wrongword hide">
-                <label>时间</label>
-                <select class="form-control" name="testtime" id="testtime">
-                    <option value ="last">上次测试</option>
-                </select>
-            </div>
-            <div class="form-group wrongword hide">
-                <label>测试</label>
-                <select class="form-control" name="test" id="test">
-                    <option value ="test1">测试1</option>
-                </select>
-            </div>
-            <input type="radio" name="dictype" value="newword" checked class="dictype hide">
-            <input type="radio" name="dictype" value="wrongword" class="dictype hide">
+
             <div class="form-group">
                 <label>词语</label>
-                <select class="form-control">
-                    <option value ="前30">前30</option>
-                    <option value ="前50">前50</option>
-                </select>
+                <br>
+                <textarea class="form-control" rows="15" id="lessonword">
+
+                </textarea>
             </div>
-            <div class="createpanel clearfix">
-                <div><input class="btn btn-default" type="submit" name="study" value="复习" id="study"></div>
-                <div><input class="btn btn-default" type="submit" name="dictate" value="听写" id="dictate"></div>
-            </div>
+
         </form>
 
     </div>
     <div class="footer_part clearfix">
-        <div><button class="footbtn rootnav" id="create">创建</button></div>
-        <div><button class="footbtn rootnav" id="dictation">听写</button></div>
-        <div><button class="footbtn rootnav" id="record">记录</button></div>
-        <div><button class="footbtn rootnav" id="errword">错词</button></div>
+
+        <div><button class="footbtn rootnav" id="save">添加</button></div>
+        <div><button class="footbtn rootnav" id="delete">删除</button></div>
     </div>
 
 </div>

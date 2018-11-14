@@ -5,6 +5,7 @@
     width:80px;
     margin:5px 10px;
     text-align:center;
+    font:20px/30px '微软雅黑';
 }
 
 .un{
@@ -15,3 +16,6 @@
     background-color: lightblue;
 }
 
+.save{
+    margin:4px auto 0;
+}

@@ -2,16 +2,20 @@
 var aWords=[];
 $(function(){
     $.get('/dictation/qryWords/', function(dic){
-		aWords = dic.words;
+        aWords = dic.words;
         // alert('get words')
-		hWords = $('#words');
-		fillWords(aWords,hWords);
+        hWords = $('#words');
+        fillWords(aWords,hWords);
     });
 
     $('.word').click(function(){
         // $(this).attr({'code':1});
         // alert($(this).attr('code'));
         $(this).toggleClass("se");
+    });
+
+    $('#next').click(function(){
+        window.location.href = '/dictation/dictating/'
     })
 });
 

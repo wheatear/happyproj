@@ -1,7 +1,7 @@
 
-body{
-	background-color:gold;
-}
+/*body{*/
+    /*background-color:gold;*/
+/*}*/
 
 
 .main_cont {
@@ -10,7 +10,7 @@ body{
     right:0;
     top:0;
     bottom:0;
-    background-color: lightblue;
+    /*background-color: lightblue;*/
 }
 
 .header_part{
@@ -20,6 +20,22 @@ body{
     text-align:center;
 
     font-size:0;
+}
+
+.headerleft{
+    float:left;
+    text-align: center;
+}
+
+.headerright{
+    float:right;
+    text-align: center;
+}
+
+.half{
+    width:50%;
+    text-align: center;
+    /*background-color: #ffc107;*/
 }
 
 #dictype{
@@ -47,13 +63,64 @@ body{
     top:40px;
     right:0;
     bottom:40px;
-    color:red;
+    /*color:red;*/
     overflow:auto;
+    font-size: 0;
 }
 
+.hide{
+    display:none;
+}
+
+.show{
+    display:block;
+}
+
+.center_part div{
+    font-size: 30px;
+}
+
+/*.tab-content div{*/
+    /*display:None;*/
+/*}*/
+
+.ch{
+    position: absolute;
+    left: 0;
+    top:0px;
+    right: 0;
+    bottom: 0;
+
+
+}
 ul{
     list-style: none;
     padding:0;
+}
+
+/*.lesson{*/
+/*position:absolute;*/
+/**/
+/*}*/
+.lsradio{
+    /*float:left;*/
+    width:50%;
+}
+
+/*.createpanel{*/
+    /*position:absolute;*/
+    /*bottom: 0;*/
+    /**/
+/*}*/
+.createpanel div{
+    float:left;
+    width:50%;
+    text-align: center;
+}
+
+.createpanel input{
+    margin:4px auto ;
+    font:20px/40px '宋体'
 }
 
 .footer_part {
@@ -67,7 +134,7 @@ ul{
     text-align:center;
 }
 
-.footer_part div{
+.footer_part .rootnav{
     float:left;
     width:25%;
 }
@@ -81,14 +148,3 @@ ul{
     /*margin:4px auto 0;*/
 }
 
-#dictation{
-
-}
-
-#dictation1{
-
-}
-
-#record{
-
-}
