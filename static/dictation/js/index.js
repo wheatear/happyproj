@@ -16,14 +16,18 @@ $(function(){
         hBook = $('#book');
         hUnit = $('#unit');
         hLesson = $('#lesson');
+        hTestTime=$('#testtime')
         hTest = $('#test');
+        hWordScope=$('#wordscope')
         fillSelect(aPress,hPress,dChoiceSelected['press']);
         fillSelect(aBook,hBook,dChoiceSelected['book']);
         fillSelect(aUnit,hUnit,dChoiceSelected['unit']);
 
         // fillRadio(aLesson,hLesson,dChoiceSelected['lesson']);
         fillSelect(aLesson,hLesson,dChoiceSelected['lesson']);
+        fillSelect(aTestTime,hTestTime,dChoiceSelected['testtime']);
         fillSelect(aTest,hTest,dChoiceSelected['test']);
+        fillSelect(aWordScope,hWordScope,dChoiceSelected['wordscope']);
     });
 
     $('#unit').change(function(){
