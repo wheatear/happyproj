@@ -36,9 +36,9 @@ def initQry(request):
     selectedLesson = choiceSelected['lesson']
     test = jsonArraySet(dictation.models.Test.tests.filter(lesson=selectedLesson),['id', 'testname'])
     dRes['test'] = test
-    testTime = jsonArraySet(dictation.models.Choice.objects.filter(type='time'))
+    testTime = jsonArraySet(dictation.models.Choice.objects.filter(type='time'),['id', 'name'])
     dRes['testtime'] = testTime
-    wordScope = jsonArraySet(dictation.models.Choice.objects.filter(type='scope'))
+    wordScope = jsonArraySet(dictation.models.Choice.objects.filter(type='scope'),['id', 'name'])
     dRes['wordscope'] = wordScope
     return JsonResponse(dRes)
 
@@ -102,8 +102,10 @@ def dispWords(request):
     lessonId = request.GET.get('lesson', None)
     testtime = request.GET.get('testtime', None)
     testId = request.GET.get('test', None)
+    wordscope = request.GET.get('wordscope', None)
     dictype = request.GET.get('dictype', None)
-    study = request.GET.get('study', None)
+    review = request.GET.get('review', None)
+    dictate = request.GET.get('dictate', None)
     choiceSelected = request.session['choiceSelected']
     # choiceSelected = {}
     if pressId:
@@ -118,9 +120,13 @@ def dispWords(request):
     if lessonId:
         # request.session['lessionId'] = lessonId
         choiceSelected['lesson'] = lessonId
+    if testtime:
+        choiceSelected['testtime'] = testtime
     if testId:
         # request.session['testId'] = testId
         choiceSelected['test'] = testId
+    if wordscope:
+        choiceSelected['wordscope'] = wordscope
     if dictype:
         # request.session['dictype'] = dictype
         choiceSelected['dictype'] = dictype
@@ -132,27 +138,45 @@ def dispWords(request):
 def qryWords(request):
     choiceSelected = request.session['choiceSelected']
     dicType = choiceSelected['dictype']
+    wordScope = choiceSelected['wordscope']
     print('dictype: %s' % dicType)
     if dicType == 'newword':
         lessonId = choiceSelected['lesson']
         print(lessonId)
         aWords = dictation.models.Word.objects.filter(lesson=lessonId)
-        jsonWords = jsonArraySet(aWords, ['id', 'word'])
+        # jsonWords = jsonArraySet(aWords, ['id', 'word'])
         # request.session['words'] = jsonWords
         # print(jsonWords)
     elif dicType == 'wrongword':
         testId = choiceSelected['test']
         print('testid: %s' % testId)
         aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True,testword__test__exact=testId)
-        jsonWords = jsonArraySet(aWords, ['id', 'word'])
-        print(jsonWords)
-    voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
+        # jsonWords = jsonArraySet(aWords, ['id', 'word'])
+        # print(jsonWords)
+    # voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
     # builder = voicebuilder.VoiceBuilder(voicePath)
     # builder.builderPinyin(jsonWords)
+    aScopeWord = getWordScope(aWords,wordScope)
+    jsonWords = jsonArraySet(aScopeWord, ['id', 'word'])
     request.session['words'] = jsonWords
     print(jsonWords)
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
+
+def getWordScope(aWords, scope):
+    wordScope = dictation.models.Choice.objects.get(pk=scope).name
+    print('scope: %s %s' % (scope,wordScope))
+    if wordScope == '前30':
+        aScpWords = aWords[:30]
+    elif wordScope == '前50':
+        aScpWords = aWords[:50]
+    elif wordScope == '前100':
+        aScpWords = aWords[:100]
+    elif wordScope == '全部':
+        aScpWords = aWords
+    else:
+        aScpWords = aWords[:50]
+    return aScpWords
 
 def qryLessonWords(request):
     lessonId = request.GET.get('lesson', None)
