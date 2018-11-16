@@ -1,0 +1,114 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}开心听写{% endblock %}</title>
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'dictation/css/bootstrap.min.css' %}">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/static/dictation/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/dictation/js/popper.min.js"></script>
+    <script src="/static/dictation/js/bootstrap.min.js"></script>
+    <!-- player JS -->
+    {#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
+    {% block player %}{% endblock %}
+
+    {% block maincssjs %}
+        <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">
+    {% endblock %}
+    {% block localcssjs %}
+        <script type="text/javascript" src="/static/dictation/js/index.js"></script>
+    {% endblock %}
+
+</head>
+<body>
+    {% block top %}
+    <div class="header_part">
+        <div class="headerleft half "><button class="btn btn-primary " id="newword">生词</button></div>
+        {#        <span>选择课文</span>#}
+        <div class="headerright half "><button class="btn btn-default " id="wrongword">错词</button></div>
+    </div>
+    {% endblock top %}
+    {% block content %}
+    <div class="center_part">
+
+        <form class="ch" id="choice" action="dispwords/">
+            <div class="form-group">
+                <label>出版社</label>
+                <select class="form-control" name="press" id="press">
+                    <option value ="人民教育出版社">人民教育出版社</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>课本</label>
+                <select class="form-control" name="book" id="book">
+                    <option value ="五年级 上册">五年级 上册</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>单元</label>
+                <select class="form-control" name="unit" id="unit">
+                    <option value ="1单元">1单元</option>
+                </select>
+            </div>
+            <div class="form-group radio">
+                <label>课文</label>
+                <select class="form-control" name="lesson" id="lesson">
+                    <option value =""></option>
+                </select>
+{#                <div id="lesson">#}
+{#                    <label class="lsradio">第1课<input type="radio" name="lesson" value="1" checked></label>#}
+{#                    <br>#}
+{#                    <label class="lsradio">第2课<input type="radio" name="lesson" value="2" checked></label>#}
+{#                    <br>#}
+{#                </div>#}
+            </div>
+            <div class="form-group wrongword hide">
+                <label>时间</label>
+                <select class="form-control" name="testtime" id="testtime">
+                    <option value ="last">上次测试</option>
+                </select>
+            </div>
+            <div class="form-group wrongword hide">
+                <label>测试</label>
+                <select class="form-control" name="test" id="test">
+                    <option value ="test1">测试1</option>
+                </select>
+            </div>
+            <input type="radio" name="dictype" value="newword" checked class="dictype hide">
+            <input type="radio" name="dictype" value="wrongword" class="dictype hide">
+            <div class="form-group">
+                <label>词语</label>
+                <select class="form-control" name="wordscope" id="wordscope">
+                    <option value ="前30">前30</option>
+                    <option value ="前50">前50</option>
+                </select>
+            </div>
+
+        </form>
+
+    </div>
+    {% endblock content %}
+    {% block bottom %}
+    <div class="footer_part clearfix">
+        <div class="createpanel clearfix">
+            <div><input class="btn btn-default" form="choice" type="submit" name="review" value="复习" id="review"></div>
+            <div><input class="btn btn-default" form="choice" type="submit" name="dictate" value="听写" id="dictate"></div>
+        </div>
+        <div>
+            <div><button class="footbtn rootnav" id="create">创建</button></div>
+            <div><button class="footbtn rootnav" id="dictation">听写</button></div>
+            <div><button class="footbtn rootnav" id="record">记录</button></div>
+            <div><button class="footbtn rootnav" id="errword">错词</button></div>
+        </div>
+    </div>
+    {% endblock bottom %}
+
+</body>
+</html>
