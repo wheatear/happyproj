@@ -279,10 +279,11 @@ def makeVoice(request):
 
 def dictate(request):
     print('dictate')
-    lessonId = request.session['lessionId']
-    unitId = request.session['unitId']
-    bookId = request.session['bookId']
-    pressId = request.session['pressId']
+    choiceSelected = request.session['choiceSelected']
+    lessonId = choiceSelected['lesson']
+    unitId = choiceSelected['unit']
+    bookId = choiceSelected['book']
+    pressId = choiceSelected['press']
     if lessonId:
         lesson = dictation.models.Lesson.objects.get(id=lessonId)
         print('dictate lesson: %s' % lessonId)
