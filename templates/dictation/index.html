@@ -47,13 +47,13 @@
             <div class="form-group">
                 <label>单元</label>
                 <select class="form-control" name="unit" id="unit">
-                    <option value ="1单元">1单元</option>
+                    <option value ="0">1单元</option>
                 </select>
             </div>
             <div class="form-group radio">
                 <label>课文</label>
                 <select class="form-control" name="lesson" id="lesson">
-                    <option value =""></option>
+                    <option value ="0"></option>
                 </select>
 {#                <div id="lesson">#}
 {#                    <label class="lsradio">第1课<input type="radio" name="lesson" value="1" checked></label>#}
@@ -65,13 +65,15 @@
             <div class="form-group wrongword hide">
                 <label>时间</label>
                 <select class="form-control" name="testtime" id="testtime">
-                    <option value ="last">上次测试</option>
+                    <option value ="0"></option>
+                    <option value ="1">上次测试</option>
                 </select>
             </div>
             <div class="form-group wrongword hide">
                 <label>测试</label>
                 <select class="form-control" name="test" id="test">
-                    <option value ="test1">测试1</option>
+                    <option value ="0"></option>
+                    <option value ="0">测试1</option>
                 </select>
             </div>
             <input type="radio" name="dictype" value="newword" checked class="dictype hide">
@@ -79,8 +81,9 @@
             <div class="form-group">
                 <label>词语</label>
                 <select class="form-control" name="wordscope" id="wordscope">
-                    <option value ="前30">前30</option>
-                    <option value ="前50">前50</option>
+                    <option value ="0"></option>
+                    <option value ="9">前30</option>
+                    <option value ="10">前50</option>
                 </select>
             </div>
 

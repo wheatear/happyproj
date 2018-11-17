@@ -26,7 +26,8 @@ $(function(){
         // fillRadio(aLesson,hLesson,dChoiceSelected['lesson']);
         fillSelect(aLesson,hLesson,dChoiceSelected['lesson']);
         fillSelect(aTestTime,hTestTime,dChoiceSelected['testtime']);
-        fillSelect(aTest,hTest,dChoiceSelected['test']);
+        // fillSelect(aTest,hTest,dChoiceSelected['test']);
+        fillSelect(aTest,hTest,None);
         fillSelect(aWordScope,hWordScope,dChoiceSelected['wordscope']);
     });
 
@@ -93,6 +94,7 @@ $(function(){
 //fill select
 function fillSelect(aOptions,hSele,selectedKey){
     hSele.empty();
+    hSele.append('<option value="0"></option>');
     $.each(aOptions, function(i,dOpt){
         //fill head
         // alert(i);
@@ -101,6 +103,7 @@ function fillSelect(aOptions,hSele,selectedKey){
         // alert(code);
         dispName = dOpt[1];
         // alert(dispName);
+
         if(code == selectedKey) {
             hSele.append('<option selected="selected" value='+code+'>'+dispName+'</option>');
         }

@@ -35,8 +35,8 @@ $(function(){
     var repeat=0;
 
     hPlay.html('准备听写');
-    hPlay.attr("disabled","true");
     hDisp.attr("disabled","true");
+    hPlay.attr("disabled","true");
     hCheck.attr("disabled","true");
     hSave.attr("disabled","true");
 
@@ -89,6 +89,7 @@ $(function(){
 
     $('#checkWord').click(function () {
         fillWords(aWords,hWords);
+        hCheck.attr("disabled","true");
         hSave.removeAttr("disabled");
         $.get('/dictation/dictate/')
         // $('.word').click(function(){
@@ -110,8 +111,10 @@ $(function(){
             }
         });
         // alert(wdResult);
-        $.post('/dictation/saveTest/',wdResult);
-        // window.location.href = '/dictation/'
+        $.post('/dictation/saveTest/',wdResult,function(dic){
+            hSave.attr("disabled","true");
+            window.location.href = '/dictation/'
+        });
     });
 
     //player set
