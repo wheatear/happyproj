@@ -150,7 +150,8 @@ def qryWords(request):
     elif dicType == 'wrongword':
         testId = choiceSelected['test']
         print('testid: %s' % testId)
-        aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True,testword__test__exact=testId)
+        # aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True,testword__test__exact=testId)
+        aWords = getWrongWords(choiceSelected)
         # jsonWords = jsonArraySet(aWords, ['id', 'word'])
         # print(jsonWords)
     # voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
@@ -163,7 +164,26 @@ def qryWords(request):
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
 
+def getWrongWords(choiceSelected):
+    testId = int(choiceSelected['test'])
+    testtimeId = int(choiceSelected['testtime'])
+    lessonId = int(choiceSelected['lesson'])
+    unitId = int(choiceSelected['unit'])
+    bookId = int(choiceSelected['book'])
+    aWords = None
+    if testId > 0:
+        aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True, testword__test__exact=testId)
+    elif testtimeId > 0 and lessonId > 0:
+        aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True, lesson=lessonId)
+    elif unitId > 0:
+        aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True, lesson__unit__exact=unitId)
+    elif bookId > 0:
+        aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True, lesson__unit__book__exact=bookId)
+    return aWords
+
 def getWordScope(aWords, scope):
+    if scope == '0':
+        return aWords
     wordScope = dictation.models.Choice.objects.get(pk=scope).name
     print('scope: %s %s' % (scope,wordScope))
     if wordScope == '前30':
