@@ -14,32 +14,66 @@ from dictation import models
 # voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
 # builder = voicebuilder.VoiceBuilder(voicePath)
 
+# initLogger = logging.getLogger('django')
+logger = logging.getLogger('django')
+errlog = logging.getLogger('error')
+# initLogger.suffix = '%Y%m%d'
+
+def logRequest(fn):
+    def new_fn(*args):
+        request = args[0]
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
+            ip = request.META['HTTP_X_FORWARDED_FOR']
+        else:
+            ip = request.META['REMOTE_ADDR']
+        # print('ip: %s' % ip)
+        logger.info('request: %s %s from %s', request.method, request.path, ip)
+        result = fn(*args)
+        return result
+    return new_fn
+
+@logRequest
 def index(request):
+    # request.session['ip'] = ip
+    extra = getExtra(request)
+    # logger = LoggerAdapter(initLogger,extra)
+
+    # logger.info('access',extra)
     return render(request,'dictation/index.html')
 
+@logRequest
 def initQry(request):
     choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.all(), ['choicename','choicecode'])
-    request.session['choiceSelected'] = choiceSelected
-    print(choiceSelected)
+    # request.session['choiceSelected'] = choiceSelected
+    extra = getExtra(request)
+    logger.info('choiceSelected: %s', choiceSelected)
+    logger.info(choiceSelected)
     dRes = {'choiceSelected':choiceSelected}
     press = jsonArraySet(dictation.models.Press.objects.all())
     dRes['press'] = press
+    logger.debug(press)
     selectedPress = choiceSelected['press']
     book = jsonArraySet(dictation.models.Book.objects.filter(press=selectedPress))
     dRes['book'] = book
+    logger.debug(book)
     selectedBook = choiceSelected['book']
     unit = jsonArraySet(dictation.models.Unit.objects.filter(book=selectedBook))
     dRes['unit'] = unit
+    logger.debug(unit)
     selectedUnit = choiceSelected['unit']
     lesson = jsonArraySetLesson(dictation.models.Lesson.objects.filter(unit=selectedUnit))
     dRes['lesson'] = lesson
+    logger.debug(lesson)
     selectedLesson = choiceSelected['lesson']
     test = jsonArraySet(dictation.models.Test.tests.filter(lesson=selectedLesson),['id', 'testname'])
     dRes['test'] = test
+    logger.debug(test)
     testTime = jsonArraySet(dictation.models.Choice.objects.filter(type='time'),['id', 'name'])
     dRes['testtime'] = testTime
+    logger.debug(testTime)
     wordScope = jsonArraySet(dictation.models.Choice.objects.filter(type='scope'),['id', 'name'])
     dRes['wordscope'] = wordScope
+    logger.debug(wordScope)
     return JsonResponse(dRes)
 
 def jsonDict(aQrySet,aFields=None):
@@ -82,19 +116,24 @@ def jsonArraySetLesson(aQrySet):
         aLi.append(li)
     return aLi
 
+@logRequest
 def qryLesson(request):
     unitId = request.GET['unit']
+    logger.info('query lesson fo unit: %s',unitId,extra)
     lesson = jsonArraySetLesson(dictation.models.Lesson.objects.filter(unit=unitId))
+    logger.info(lesson)
     dRes = {'lesson':lesson}
     return JsonResponse(dRes)
 
+@logRequest
 def qryTest(request):
     lessonId = request.GET['lesson']
-    print('query test by lessonid: %s' %  lessonId)
+    logger.info('query test by lessonid: %s', lessonId)
     test = jsonArraySet(dictation.models.Test.tests.filter(lesson=lessonId),['id', 'testname'])
     dRes = {'test':test}
     return JsonResponse(dRes)
 
+@logRequest
 def dispWords(request):
     pressId = request.GET.get('press', None)
     bookId = request.GET.get('book', None)
@@ -135,21 +174,22 @@ def dispWords(request):
     saveChoiceSelected(choiceSelected)
     return render(request, 'dictation/dictating.html')
 
+@logRequest
 def qryWords(request):
     choiceSelected = request.session['choiceSelected']
     dicType = choiceSelected['dictype']
     wordScope = choiceSelected['wordscope']
-    print('dictype: %s' % dicType)
+    logger.info('dictype: %s', dicType)
     if dicType == 'newword':
         lessonId = choiceSelected['lesson']
-        print(lessonId)
+        logger.info('lessonid: %s', lessonId)
         aWords = dictation.models.Word.objects.filter(lesson=lessonId)
         # jsonWords = jsonArraySet(aWords, ['id', 'word'])
         # request.session['words'] = jsonWords
         # print(jsonWords)
     elif dicType == 'wrongword':
         testId = choiceSelected['test']
-        print('testid: %s' % testId)
+        logger.info('testid: %s', testId)
         # aWords = dictation.models.Word.objects.filter(testword__wrong__exact=True,testword__test__exact=testId)
         aWords = getWrongWords(choiceSelected)
         # jsonWords = jsonArraySet(aWords, ['id', 'word'])
@@ -160,7 +200,7 @@ def qryWords(request):
     aScopeWord = getWordScope(aWords,wordScope)
     jsonWords = jsonArraySet(aScopeWord, ['id', 'word'])
     request.session['words'] = jsonWords
-    print(jsonWords)
+    logger.info(jsonWords)
     dRes = {'words': jsonWords}
     return JsonResponse(dRes)
 
@@ -185,7 +225,7 @@ def getWordScope(aWords, scope):
     if scope == '0':
         return aWords
     wordScope = dictation.models.Choice.objects.get(pk=scope).name
-    print('scope: %s %s' % (scope,wordScope))
+    logger.info('scope: %s %s', scope,wordScope)
     if wordScope == '前30':
         aScpWords = aWords[:30]
     elif wordScope == '前50':
@@ -198,6 +238,7 @@ def getWordScope(aWords, scope):
         aScpWords = aWords[:50]
     return aScpWords
 
+@logRequest
 def qryLessonWords(request):
     lessonId = request.GET.get('lesson', None)
     aWords = dictation.models.Word.objects.filter(lesson=lessonId)
@@ -207,15 +248,16 @@ def qryLessonWords(request):
             sWord = wd
         else:
             sWord = '%s %s' % (sWord, wd)
-    print(sWord)
+    logger.info(sWord)
     return JsonResponse({'words': sWord})
 
+@logRequest
 def saveLessonWords(request):
     lessonId = request.POST.get('lesson', None)
     sWord = request.POST.get('words', None)
     aWords = sWord.split()
-    print('add lessonid: %s' % lessonId)
-    print('add word: %s' % sWord)
+    logger.info('add lessonid: %s', lessonId)
+    logger.info('add word: %s', sWord)
     # oldWords = dictation.models.Word.objects.filter(lesson=lessonId)
     # print('old words: %s' % oldWords)
     # # oldWords.all().delete()
@@ -228,12 +270,13 @@ def saveLessonWords(request):
         lswd.save()
     return JsonResponse({'response': 'ok'})
 
+@logRequest
 def delLessonWords(request):
     lessonId = request.POST.get('lesson', None)
     sWord = request.POST.get('words', None)
     aWords = sWord.split()
-    print('delete lessonid: %s' % lessonId)
-    print('delete word: %s' % sWord)
+    logger.info('delete lessonid: %s', lessonId)
+    logger.info('delete word: %s', sWord)
     for wd in aWords:
         # lswd = models.Word.objects.create(lessonId, wd)
         lswd = models.Word.objects.filter(lesson_id=lessonId, word=wd)
@@ -241,7 +284,7 @@ def delLessonWords(request):
     return JsonResponse({'response': 'ok'})
 
 def saveChoiceSelected(choiceSelected):
-    print('save choice selected...')
+    logger.info('save choice selected...')
     for k in choiceSelected:
         chses = dictation.models.ChoiceSelected.objects.filter(choicename=k)
         if chses:
@@ -249,7 +292,7 @@ def saveChoiceSelected(choiceSelected):
             chse.setChoicecode(k,choiceSelected[k])
         else:
             chse = models.ChoiceSelected.objects.create(k, choiceSelected[k])
-        print('name: %s  value: %s   code: %s' % (chse.choicename,chse.choicevalue,chse.choicecode) )
+        logger.info('name: %s  value: %s   code: %s', chse.choicename,chse.choicevalue,chse.choicecode)
         chse.save()
 
 # def checkWords(request):
@@ -278,8 +321,9 @@ def saveChoiceSelected(choiceSelected):
 #     request.session['testId'] = test.id
 #     return render(request,'dictation/dictating.html')
 
+@logRequest
 def makeVoice(request):
-    print('make word voice...')
+    logger.info('make word voice...')
     aWords = request.session['words']
 
     # request.session['words'] = None
@@ -290,15 +334,16 @@ def makeVoice(request):
     builder.builderVoice(aWords)
     # request.session['words'] = aWords
     request.session['words'] = None
-    print('make voice ok.')
-    print(aWords)
+    logger.info('make voice ok.')
+    logger.info(aWords)
     # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
     dRes = {'words': aWords}
     return JsonResponse(dRes)
     # return JsonResponse({'response':'ok'})
 
+@logRequest
 def dictate(request):
-    print('dictate')
+    logger.info('dictate')
     choiceSelected = request.session['choiceSelected']
     lessonId = choiceSelected['lesson']
     unitId = choiceSelected['unit']
@@ -306,10 +351,10 @@ def dictate(request):
     pressId = choiceSelected['press']
     if lessonId:
         lesson = dictation.models.Lesson.objects.get(id=lessonId)
-        print('dictate lesson: %s' % lessonId)
+        logger.info('dictate lesson: %s', lessonId)
     if unitId:
         unit = dictation.models.Unit.objects.get(id=unitId)
-        print('dictate unit: %s' % unitId)
+        logger.info('dictate unit: %s', unitId)
     if bookId:
         book = dictation.models.Book.objects.get(id=bookId)
     if pressId:
@@ -317,7 +362,7 @@ def dictate(request):
     test = models.Test.tests.create(press, book, unit, lesson)
     test.save()
     request.session['testId'] = test.id
-    print('dictate test: %s' % test.id)
+    logger.info('dictate test: %s', test.id)
     return JsonResponse({'response':'ok'})
 
     # # aWordId = request.POST.get('word', None)
@@ -334,27 +379,78 @@ def dictate(request):
     # dRes = {'words': jsonWords}
     # return JsonResponse(dRes)
 
+@logRequest
 def qryTestWords(request):
     aWords = request.session['words']
     dRes = {'words': aWords}
     return JsonResponse(dRes)
 
+@logRequest
 def dispPinyin(request):
     return render(request,'dictation/index.html')
 
+@logRequest
 def saveTest(request):
     testid = request.session['testId']
     # testRlt = request.POST.get('test[]', None)
-    print('savetest %s' % testid)
+    logger.info('savetest %s', testid)
     testRlt = request.POST
-    print('save test words %s' % testRlt)
+    logger.info('save test words %s', testRlt)
     for w in testRlt:
         tstWd = models.TestWord.objects.create(testid, w, testRlt[w])
         tstWd.save()
     return JsonResponse({'response':'ok'})
 
+@logRequest
 def tabtest(request):
     return render(request,'dictation/tabtest.html')
 
+@logRequest
 def wordImport(request):
     return render(request, 'dictation/wordimport.html')
+
+def getIp(request):
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        ip = request.META['REMOTE_ADDR']
+    return ip
+
+def getExtra(request):
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        ip = request.META['REMOTE_ADDR']
+    # print('ip: %s' % ip)
+    extra_dict = {"ip": ip, "username": "Dictation"}
+    return extra_dict
+
+class LoggerAdapter(logging.LoggerAdapter):
+    def __init__(self, logger, extra):
+        self.logger = logger
+        self.extra = extra
+
+    def process(self, msg, kwargs):
+        if 'extra' not in kwargs:
+            kwargs["extra"] = self.extra
+        return msg, kwargs
+
+    def debug(self, msg, *args, **kwargs):
+        msg, kwargs = self.process(msg, kwargs)
+        self.logger.debug(msg, *args, **kwargs)
+
+    def info(self, msg, *args, **kwargs):
+        msg, kwargs = self.process(msg, kwargs)
+        self.logger.info(msg, *args, **kwargs)
+
+    def warning(self, msg, *args, **kwargs):
+        msg, kwargs = self.process(msg, kwargs)
+        self.logger.warning(msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        msg, kwargs = self.process(msg, kwargs)
+        self.logger.error(msg, *args, **kwargs)
+
+    def critical(self, msg, *args, **kwargs):
+        msg, kwargs = self.process(msg, kwargs)
+        self.logger.critical(msg, *args, **kwargs)

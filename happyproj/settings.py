@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import logging
+import django.utils.log
+import logging.handlers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,3 +128,99 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'datefmt': '%Y%m%d%H%M%S',
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(process)d:%(thread)d] [%(levelname)s]- %(message)s'},  #标准日志格式  %(ip)s-%(username)s
+        'exceptfmt': {
+            'format': '%(asctime)s [%(process)d:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'},  #异常日志格式 %(ip)s-%(username)s
+    },
+    'filters': {
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+        'default': {
+            'level':'DEBUG',
+            'class':'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'log/dictation.log'),     #日志输出文件
+            'when': 'midnight',                  #文件大小
+            'interval': 1,
+            'backupCount': 5,                         #备份份数
+            # 'datefmt': '%Y%m%d%H%M%S',
+            'formatter':'standard',                   #使用哪种formatters日志格式
+            # 'suffix': "%Y-%m-%d_%H-%M-%S.log",
+        },
+        'error': {
+            'level':'ERROR',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'log/dictation.err'),
+            'maxBytes':1024*1024*5,
+            'backupCount': 5,
+            'formatter':'exceptfmt',
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'request_handler': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'log/script.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+        },
+        'scripts_handler': {
+            'level':'DEBUG',
+            'class':'logging.handlers.RotatingFileHandler',
+            'filename':os.path.join(BASE_DIR, 'log/script.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter':'standard',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'error': {
+            'handlers': ['error', 'console'],
+            'level': 'ERROR',
+            'propagate': True
+        },
+        'django.request': {
+            'handlers': ['request_handler'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'scripts': {
+            'handlers': ['scripts_handler'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        'sourceDns.webdns.views': {
+            'handlers': ['default', 'error'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'sourceDns.webdns.util':{
+            'handlers': ['error'],
+            'level': 'ERROR',
+            'propagate': True
+        }
+    }
+}
