@@ -121,6 +121,8 @@ class Test(models.Model):
     lesson = models.ForeignKey(Lesson, None, db_column='lessonid',null=True)
 
     tests = TestManager()
+    def __str__(self):
+        return '%s %s' % (self.id, self.testname)
     class Meta:
         db_table='lw_test'
 

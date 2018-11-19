@@ -27,7 +27,7 @@ $(function(){
         fillSelect(aLesson,hLesson,dChoiceSelected['lesson']);
         fillSelect(aTestTime,hTestTime,dChoiceSelected['testtime']);
         // fillSelect(aTest,hTest,dChoiceSelected['test']);
-        fillSelect(aTest,hTest,None);
+        fillSelect(aTest,hTest,0);
         fillSelect(aWordScope,hWordScope,dChoiceSelected['wordscope']);
     });
 

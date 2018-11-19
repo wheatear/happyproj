@@ -35,7 +35,7 @@ def logRequest(fn):
 @logRequest
 def index(request):
     # request.session['ip'] = ip
-    extra = getExtra(request)
+    # extra = getExtra(request)
     # logger = LoggerAdapter(initLogger,extra)
 
     # logger.info('access',extra)
@@ -44,8 +44,7 @@ def index(request):
 @logRequest
 def initQry(request):
     choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.all(), ['choicename','choicecode'])
-    request.session['choiceSelected'] = choiceSelected
-    extra = getExtra(request)
+    # request.session['choiceSelected'] = choiceSelected
     logger.info('choiceSelected: %s', choiceSelected)
     logger.info(choiceSelected)
     dRes = {'choiceSelected':choiceSelected}
@@ -119,7 +118,7 @@ def jsonArraySetLesson(aQrySet):
 # @logRequest
 def qryLesson(request):
     unitId = request.GET['unit']
-    logger.info('query lesson fo unit: %s',unitId,extra)
+    logger.info('query lesson fo unit: %s',unitId)
     lesson = jsonArraySetLesson(dictation.models.Lesson.objects.filter(unit=unitId))
 
     dRes = {'lesson':lesson}
@@ -354,10 +353,10 @@ def dictate(request):
     pressId = choiceSelected['press']
     if lessonId:
         lesson = dictation.models.Lesson.objects.get(id=lessonId)
-        logger.info('dictate lesson: %s', lessonId)
+        logger.info('dictate lesson: %s', lesson)
     if unitId:
         unit = dictation.models.Unit.objects.get(id=unitId)
-        logger.info('dictate unit: %s', unitId)
+        logger.info('dictate unit: %s', unit)
     if bookId:
         book = dictation.models.Book.objects.get(id=bookId)
     if pressId:
@@ -365,7 +364,7 @@ def dictate(request):
     test = models.Test.tests.create(press, book, unit, lesson)
     test.save()
     request.session['testId'] = test.id
-    logger.info('dictate test: %s', test.id)
+    logger.info('dictate test: %s', test)
     return JsonResponse({'response':'ok'})
 
     # # aWordId = request.POST.get('word', None)
