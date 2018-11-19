@@ -44,7 +44,7 @@ def index(request):
 @logRequest
 def initQry(request):
     choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.all(), ['choicename','choicecode'])
-    # request.session['choiceSelected'] = choiceSelected
+    request.session['choiceSelected'] = choiceSelected
     extra = getExtra(request)
     logger.info('choiceSelected: %s', choiceSelected)
     logger.info(choiceSelected)
@@ -116,21 +116,24 @@ def jsonArraySetLesson(aQrySet):
         aLi.append(li)
     return aLi
 
-@logRequest
+# @logRequest
 def qryLesson(request):
     unitId = request.GET['unit']
     logger.info('query lesson fo unit: %s',unitId,extra)
     lesson = jsonArraySetLesson(dictation.models.Lesson.objects.filter(unit=unitId))
-    logger.info(lesson)
+
     dRes = {'lesson':lesson}
+    logger.info(lesson)
     return JsonResponse(dRes)
 
-@logRequest
+# @logRequest
 def qryTest(request):
     lessonId = request.GET['lesson']
     logger.info('query test by lessonid: %s', lessonId)
     test = jsonArraySet(dictation.models.Test.tests.filter(lesson=lessonId),['id', 'testname'])
+
     dRes = {'test':test}
+    logger.info(test)
     return JsonResponse(dRes)
 
 @logRequest
