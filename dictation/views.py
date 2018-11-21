@@ -147,8 +147,8 @@ def dispWords(request):
     dictype = request.GET.get('dictype', None)
     review = request.GET.get('review', None)
     dictate = request.GET.get('dictate', None)
-    choiceSelected = request.session['choiceSelected']
-    # choiceSelected = {}
+    # choiceSelected = request.session['choiceSelected']
+    choiceSelected = {}
     if pressId:
         # request.session['pressId'] = pressId
         choiceSelected['press'] = pressId
