@@ -20,3 +20,5 @@ urlpatterns = [
     url(r'^delLsWords/$', views.delLessonWords),
     url(r'^tabtest/$', views.tabtest),
 ]
+
+handler404 = views.page_not_found

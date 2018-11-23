@@ -19,6 +19,9 @@ logger = logging.getLogger('django')
 errlog = logging.getLogger('error')
 # initLogger.suffix = '%Y%m%d'
 
+def page_not_found(request):
+    return render(request, '404.html')
+
 def logRequest(fn):
     def new_fn(*args):
         request = args[0]
