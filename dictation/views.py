@@ -27,6 +27,7 @@ def logRequest(fn):
         else:
             ip = request.META['REMOTE_ADDR']
         # print('ip: %s' % ip)
+        # userAgent = request.META.get('HTTP_USER_AGENT', '')
         logger.info('request: %s %s from %s', request.method, request.path, ip)
         result = fn(*args)
         return result
