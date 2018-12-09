@@ -1,0 +1,41 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}开心听写{% endblock %}</title>
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'dictation/css/bootstrap.min.css' %}">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/static/dictation/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/dictation/js/popper.min.js"></script>
+    <script src="/static/dictation/js/bootstrap.min.js"></script>
+    <!-- player JS -->
+    {#    <script type="text/javascript" src="/static/dictation/js/cyberplayer.js"></script>#}
+    {% block player %}{% endblock %}
+
+    {% block maincssjs %}
+{#        <link rel="stylesheet" type="text/css" href="/static/dictation/css/main.css">#}
+    {% endblock %}
+    {% block localcssjs %}
+{#        <script type="text/javascript" src="/static/dictation/js/index.js"></script>#}
+    {% endblock %}
+
+</head>
+<body>
+    {% block top %}
+    {% endblock top %}
+    {% block content %}
+
+    {% endblock content %}
+    {% block bottom %}
+
+    {% endblock bottom %}
+
+</body>
+</html>

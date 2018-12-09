@@ -8,6 +8,7 @@ import dictation
 import logging
 from dictation import voicebuilder
 from dictation import models
+from login.views import check_login
 
 
 # Create your views here.
@@ -36,6 +37,7 @@ def logRequest(fn):
         return result
     return new_fn
 
+@check_login
 @logRequest
 def index(request):
     # request.session['ip'] = ip
@@ -45,16 +47,31 @@ def index(request):
     # logger.info('access',extra)
     return render(request,'dictation/index.html')
 
+@check_login
 @logRequest
 def initQry(request):
-    choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.all(), ['choicename','choicecode'])
+    userId = request.session['userId']
+    if not userId:
+        return None
+    choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.filter(user=userId), ['choicename','choicecode'])
     # request.session['choiceSelected'] = choiceSelected
     logger.info('choiceSelected: %s', choiceSelected)
-    logger.info(choiceSelected)
+    # logger.info(choiceSelected)
     dRes = {'choiceSelected':choiceSelected}
     press = jsonArraySet(dictation.models.Press.objects.all())
     dRes['press'] = press
     logger.debug(press)
+    if len(choiceSelected) < 1:
+        choiceSelected['press'] = 1
+        dRes['choiceSelected'] = choiceSelected
+        selectedPress = choiceSelected['press']
+        book = jsonArraySet(dictation.models.Book.objects.filter(press=selectedPress))
+        logger.debug(book)
+        dRes['book'] = book
+        wordScope = jsonArraySet(dictation.models.Choice.objects.filter(type='scope'), ['id', 'name'])
+        dRes['wordscope'] = wordScope
+        logger.debug(wordScope)
+        return JsonResponse(dRes)
     selectedPress = choiceSelected['press']
     book = jsonArraySet(dictation.models.Book.objects.filter(press=selectedPress))
     dRes['book'] = book
@@ -119,7 +136,28 @@ def jsonArraySetLesson(aQrySet):
         aLi.append(li)
     return aLi
 
+# @check_login
+def qryBook(request):
+    pressId = request.GET['press']
+    logger.info('query book of press: %s',pressId)
+    book = jsonArraySet(dictation.models.Book.objects.filter(press=pressId))
+
+    dRes = {'book':book}
+    logger.info(book)
+    return JsonResponse(dRes)
+
+@check_login
+def qryUnit(request):
+    bookId = request.GET['book']
+    logger.info('query unit of book: %s',bookId)
+    unit = jsonArraySet(dictation.models.Unit.objects.filter(book=bookId))
+    # unit = jsonArraySet(dictation.models.Unit.objects.filter(book=selectedBook))
+    logger.info(unit)
+    dRes = {'unit':unit}
+    return JsonResponse(dRes)
+
 # @logRequest
+@check_login
 def qryLesson(request):
     unitId = request.GET['unit']
     logger.info('query lesson fo unit: %s',unitId)
@@ -130,17 +168,25 @@ def qryLesson(request):
     return JsonResponse(dRes)
 
 # @logRequest
+@check_login
 def qryTest(request):
+    userId = request.session['userId']
+    if not userId:
+        return None
     lessonId = request.GET['lesson']
     logger.info('query test by lessonid: %s', lessonId)
-    test = jsonArraySet(dictation.models.Test.tests.filter(lesson=lessonId),['id', 'testname'])
+    test = jsonArraySet(dictation.models.Test.tests.filter(user=userId, lesson=lessonId),['id', 'testname'])
 
     dRes = {'test':test}
     logger.info(test)
     return JsonResponse(dRes)
 
+@check_login
 @logRequest
 def dispWords(request):
+    userId = request.session['userId']
+    if not userId:
+        return None
     pressId = request.GET.get('press', None)
     bookId = request.GET.get('book', None)
     unitId = request.GET.get('unit', None)
@@ -152,6 +198,7 @@ def dispWords(request):
     review = request.GET.get('review', None)
     dictate = request.GET.get('dictate', None)
     # choiceSelected = request.session['choiceSelected']
+
     choiceSelected = {}
     if pressId:
         # request.session['pressId'] = pressId
@@ -177,9 +224,10 @@ def dispWords(request):
         choiceSelected['dictype'] = dictype
     # choiceSelected['lession'] = lessonId
     request.session['choiceSelected'] = choiceSelected
-    saveChoiceSelected(choiceSelected)
+    saveChoiceSelected(choiceSelected, userId)
     return render(request, 'dictation/dictating.html')
 
+@check_login
 @logRequest
 def qryWords(request):
     choiceSelected = request.session['choiceSelected']
@@ -244,6 +292,7 @@ def getWordScope(aWords, scope):
         aScpWords = aWords[:50]
     return aScpWords
 
+@check_login
 @logRequest
 def qryLessonWords(request):
     lessonId = request.GET.get('lesson', None)
@@ -257,6 +306,7 @@ def qryLessonWords(request):
     logger.info(sWord)
     return JsonResponse({'words': sWord})
 
+@check_login
 @logRequest
 def saveLessonWords(request):
     lessonId = request.POST.get('lesson', None)
@@ -276,6 +326,7 @@ def saveLessonWords(request):
         lswd.save()
     return JsonResponse({'response': 'ok'})
 
+@check_login
 @logRequest
 def delLessonWords(request):
     lessonId = request.POST.get('lesson', None)
@@ -289,15 +340,15 @@ def delLessonWords(request):
         lswd.delete()
     return JsonResponse({'response': 'ok'})
 
-def saveChoiceSelected(choiceSelected):
+def saveChoiceSelected(choiceSelected, userId):
     logger.info('save choice selected...')
     for k in choiceSelected:
-        chses = dictation.models.ChoiceSelected.objects.filter(choicename=k)
+        chses = dictation.models.ChoiceSelected.objects.filter(user=userId, choicename=k)
         if chses:
             chse = chses[0]
             chse.setChoicecode(k,choiceSelected[k])
         else:
-            chse = models.ChoiceSelected.objects.create(k, choiceSelected[k])
+            chse = models.ChoiceSelected.objects.create(userId, k, choiceSelected[k])
         logger.info('name: %s  value: %s   code: %s', chse.choicename,chse.choicevalue,chse.choicecode)
         chse.save()
 
@@ -327,6 +378,7 @@ def saveChoiceSelected(choiceSelected):
 #     request.session['testId'] = test.id
 #     return render(request,'dictation/dictating.html')
 
+@check_login
 @logRequest
 def makeVoice(request):
     logger.info('make word voice...')
@@ -347,9 +399,13 @@ def makeVoice(request):
     return JsonResponse(dRes)
     # return JsonResponse({'response':'ok'})
 
+@check_login
 @logRequest
 def dictate(request):
     logger.info('dictate')
+    userId = request.session['userId']
+    if not userId:
+        return None
     choiceSelected = request.session['choiceSelected']
     lessonId = choiceSelected['lesson']
     unitId = choiceSelected['unit']
@@ -365,7 +421,7 @@ def dictate(request):
         book = dictation.models.Book.objects.get(id=bookId)
     if pressId:
         press = dictation.models.Press.objects.get(id=pressId)
-    test = models.Test.tests.create(press, book, unit, lesson)
+    test = models.Test.tests.create(userId, press, book, unit, lesson)
     test.save()
     request.session['testId'] = test.id
     logger.info('dictate test: %s', test)
@@ -385,18 +441,27 @@ def dictate(request):
     # dRes = {'words': jsonWords}
     # return JsonResponse(dRes)
 
+@check_login
 @logRequest
 def qryTestWords(request):
+    # userId = request.session['userId']
+    # if not userId:
+    #     return None
     aWords = request.session['words']
     dRes = {'words': aWords}
     return JsonResponse(dRes)
 
+@check_login
 @logRequest
 def dispPinyin(request):
     return render(request,'dictation/index.html')
 
+@check_login
 @logRequest
 def saveTest(request):
+    # userId = request.session['userId']
+    # if not userId:
+    #     return None
     testid = request.session['testId']
     # testRlt = request.POST.get('test[]', None)
     logger.info('savetest %s', testid)

@@ -31,12 +31,45 @@ $(function(){
         fillSelect(aWordScope,hWordScope,dChoiceSelected['wordscope']);
     });
 
+    $('#press').change(function(){
+        // alert('unit changed');
+        hBook = $('#book');
+        hBook.empty();
+        pressCode = $(this).val();
+        qry = 'qryBook/?press='+pressCode;
+        // alert(qry);
+        $.get(qry,function(dic){
+            aBook = dic.book;
+            // alert(aLesson);
+            // fillRadio(aLesson,hLesson,'None');
+            fillSelect(aBook,hBook,'None');
+        })
+    });
+
+    $('#book').change(function(){
+        // alert('unit changed');
+        hUnit = $('#unit');
+        hUnit.empty();
+        bookCode = $(this).val();
+        // aLesson.push(unitCode);
+        // alert(aLesson);
+        qry = 'qryUnit/?book='+bookCode;
+        // alert(qry);
+        $.get(qry,function(dic){
+            aUnit = dic.unit;
+            // alert(aLesson);
+            // fillRadio(aLesson,hLesson,'None');
+            fillSelect(aUnit,hUnit,'None');
+        })
+    });
+
     $('#unit').change(function(){
         // alert('unit changed');
         hLesson = $('#lesson');
         hLesson.empty();
         unitCode = $(this).val();
-        aLesson.push(unitCode);
+        // alert(unitCode);
+        // aLesson.push(unitCode);
         // alert(aLesson);
         qry = 'qryLesson/?unit='+unitCode;
         // alert(qry);

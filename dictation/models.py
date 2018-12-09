@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from login.models import User
 
 # Create your models here.
 
@@ -15,7 +16,7 @@ class Book(models.Model):
     id=models.AutoField(primary_key=True,db_column='bookid')
     bookname=models.CharField(max_length=100,db_column='bookname')
     name=models.CharField(max_length=20,db_column='grade')
-    press=models.ForeignKey('Press',models.CASCADE, db_column='pressid')
+    press=models.ForeignKey(Press,models.CASCADE, db_column='pressid')
     class Meta:
         db_table='lw_book'
     def __str__(self):
@@ -24,7 +25,7 @@ class Book(models.Model):
 class Unit(models.Model):
     id=models.AutoField(primary_key=True, db_column='unitid')
     name=models.CharField(max_length=50,db_column='unitname')
-    book=models.ForeignKey('Book',on_delete=models.CASCADE,db_column='bookid')
+    book=models.ForeignKey(Book,on_delete=models.CASCADE,db_column='bookid')
     class Meta:
         db_table='lw_unit'
     def __str__(self):
@@ -58,8 +59,9 @@ class Word(models.Model):
         return self.word
 
 class ChoiceSelectedManager(models.Manager):
-    def create(self,name,code):
+    def create(self, userId, name, code):
         chse = self.model()
+        chse.user_id = userId
         chse.choicename = name
         chse.setChoicecode(name, code)
         # if name == 'dictype':
@@ -78,6 +80,7 @@ class ChoiceSelected(models.Model):
     choicename=models.CharField(max_length=20,unique=True)
     choicevalue=models.CharField(max_length=100, null=True, blank=True)
     choicecode = models.IntegerField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userid')
     class Meta:
         db_table='lw_choiceselected'
     objects = ChoiceSelectedManager()
@@ -94,8 +97,9 @@ class ChoiceSelected(models.Model):
             self.choicecode = code
 
 class TestManager(models.Manager):
-    def create(self,press,book,unit=None,lesson=None):
+    def create(self,userid, press,book,unit=None,lesson=None):
         test = self.model()
+        test.user_id = userid
         test.press = press
         test.book = book
         test.unit = unit
@@ -119,7 +123,7 @@ class Test(models.Model):
     book = models.ForeignKey(Book, None, db_column='bookid')
     unit = models.ForeignKey(Unit, None, db_column='unitid',null=True)
     lesson = models.ForeignKey(Lesson, None, db_column='lessonid',null=True)
-
+    user = models.ForeignKey(User, None, db_column='userid')
     tests = TestManager()
     def __str__(self):
         return '%s %s' % (self.id, self.testname)
@@ -139,6 +143,7 @@ class TestWord(models.Model):
     test=models.ForeignKey(Test,None,db_column='testid')
     wrong=models.BooleanField(db_column='wrong',default=False)
     word=models.ForeignKey(Word,None,db_column='wordid')
+
     class Meta:
         db_table='lw_testwords'
 

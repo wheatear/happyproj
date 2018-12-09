@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dictation',
+    'login',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# session setting
+SESSION_COOKIE_AGE=1800
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 ROOT_URLCONF = 'happyproj.urls'
 
