@@ -27,10 +27,10 @@ def login(request):
     logger.info('request path: %s', request.path)
     logger.info('request post: %s', request.POST)
     if request.method == "POST":
-        register = request.POST.get('register', None)
-        if register:
-            logger.info('redirect register')
-            return redirect('register/')
+        # register = request.POST.get('register', None)
+        # if register:
+        #     logger.info('redirect register')
+        #     return redirect('register/')
         username = request.POST.get('username', None)
         password = request.POST.get('password', None)
         message = "所有字段都必须填写！"
@@ -67,6 +67,11 @@ def register(request):
             username = register_form.cleaned_data['username']
             password1 = register_form.cleaned_data['password1']
             password2 = register_form.cleaned_data['password2']
+            realName = register_form.cleaned_data['realName']
+            qq = register_form.cleaned_data['qq']
+            weChat = register_form.cleaned_data['weChat']
+            phone = register_form.cleaned_data['phone']
+
             email = register_form.cleaned_data['email']
             sex = register_form.cleaned_data['sex']
             if password1 != password2:  # 判断两次密码是否相同
@@ -88,7 +93,11 @@ def register(request):
                 new_user = models.User.objects.create()
                 new_user.name = username
                 new_user.passwd = password1
-                new_user.email = email
+                new_user.realName = realName
+                new_user.qq = qq
+                new_user.weChat = weChat
+                new_user.phone = phone
+                new_user.eMail = email
                 new_user.sex = sex
                 new_user.save()
                 return redirect('/login/')  # 自动跳转到登录页面
