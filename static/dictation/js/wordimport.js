@@ -30,7 +30,7 @@ $(function(){
         hBook = $('#book');
         hBook.empty();
         pressCode = $(this).val();
-        qry = 'qryBook/?press='+pressCode;
+        qry = '/dictation/qryBook/?press='+pressCode;
         // alert(qry);
         $.get(qry,function(dic){
             aBook = dic.book;
@@ -47,7 +47,7 @@ $(function(){
         bookCode = $(this).val();
         // aLesson.push(unitCode);
         // alert(aLesson);
-        qry = 'qryUnit/?book='+bookCode;
+        qry = '/dictation/qryUnit/?book='+bookCode;
         // alert(qry);
         $.get(qry,function(dic){
             aUnit = dic.unit;
