@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
-url(r'^index$', views.index),
+    url(r'^index$', views.index),
     url(r'^initQry/$', views.initQry),
     url(r'^qryBook/$', views.qryBook),
     url(r'^qryUnit/$', views.qryUnit),

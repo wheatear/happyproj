@@ -60,6 +60,7 @@ def register(request):
     #     # 登录状态不允许注册。你可以修改这条原则！
     #     return redirect("/index/")
     # print(request.path)
+    message = ''
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST)
         message = "请检查填写的内容！"
@@ -102,5 +103,6 @@ def register(request):
                 new_user.save()
                 return redirect('/login/')  # 自动跳转到登录页面
     register_form = forms.RegisterForm()
+
     return render(request, 'login/register.html', locals())
     # return render(request, 'login/register.html')

@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from login import views
+from dictation import views as dviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('dictation/', include('dictation.urls')),
-    path('login/', views.login),
-    path('logout/', views.logout),
-    path('register/', views.register),
+    path('', dviews.index),
+    path(r'dictation/', include('dictation.urls')),
+    path(r'login/', views.login),
+    path(r'logout/', views.logout),
+    path(r'register/', views.register),
 ]
