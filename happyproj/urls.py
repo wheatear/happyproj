@@ -20,7 +20,7 @@ from dictation import views as dviews
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path(r'^favicon.ico$',RedirectView.as_view(url=r'static/favicon.ico')),
+    path(r'favicon.ico$',RedirectView.as_view(url=r'static/favicon.ico')),
     path('admin/', admin.site.urls),
     path('', dviews.index),
     path(r'dictation/', include('dictation.urls')),
