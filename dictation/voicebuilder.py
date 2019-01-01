@@ -8,7 +8,11 @@ import random
 import sqlite3
 import pypinyin
 import threading
+import logging
 
+
+logger = logging.getLogger('django')
+errlog = logging.getLogger('error')
 
 class AipClient(object):
     def __init__(self,appId,apiKey,secretKey):
@@ -80,51 +84,63 @@ class VoiceBuilder(object):
     APP_ID = '10568246'
     API_KEY = '6cFFqOMdPr3EIYx4uEpYsD4s'
     SECRET_KEY = '6e2c9e550e3358d1e6fd85030115ae36'
+    ANNOUNCEVOICE = [['1', '开始听写'], ['2', '听写完毕']]
 
     def __init__(self, path):
-        self.emceeSet = {}
+        self.announceSet = {}
         self.dictateSet = {}
         self.vioceSet()
         self.voicePath = path
         self.client = AipClient(VoiceBuilder.APP_ID, VoiceBuilder.API_KEY, VoiceBuilder.SECRET_KEY)
 
     def vioceSet(self):
-        # presenterSet
-        self.emceeSet['spd'] = 5  # 语速，取值0-9，默认为5中语速
-        self.emceeSet['pit'] = 5  # 音调，取值0-9，默认为5中语调
-        self.emceeSet['vol'] = 12  # 音量，取值0-15，默认为5中音量
-        self.emceeSet['per'] = 3  # 发音人选择, 0为女声，1为男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女
+        # announcerSet
+        self.announceSet['spd'] = 5  # 语速，取值0-9，默认为5中语速
+        self.announceSet['pit'] = 5  # 音调，取值0-9，默认为5中语调
+        self.announceSet['vol'] = 12  # 音量，取值0-15，默认为5中音量
+        self.announceSet['per'] = 3  # 发音人选择, 0为女声，1为男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女
         # listenSet
         self.dictateSet['spd'] = 2  # 语速，取值0-9，默认为5中语速
         self.dictateSet['pit'] = 5  # 音调，取值0-9，默认为5中语调
         self.dictateSet['vol'] = 12  # 音量，取值0-15，默认为5中音量
         self.dictateSet['per'] = 0  # 发音人选择, 0为女声，1为男声，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女
 
-    def builderVoice(self, aWords):
+    def builderVoice(self, aWords, voiceSet=None):
+        if not voiceSet:
+            voiceSet = self.dictateSet
         for aWd in aWords:
-            print(aWd)
+            logger.info('builde voice for %s', aWd)
             word = aWd[1]
-            aWd.append(self.makePinyin(word))
             if len(aWd) > 3 and aWd[3]:
                 continue
+            aWd.append(self.makePinyin(word))
+
             wordKey = word.encode('unicode_escape').replace(b'\\u', b'').decode()
-            voiceFile = '%s_%d%d%d%d.mp3' % (wordKey, self.dictateSet['per'], self.dictateSet['pit'], self.dictateSet['spd'], self.dictateSet['vol'])
+            voiceFile = '%s_%d%d%d%d.mp3' % (wordKey, voiceSet['per'], voiceSet['pit'], voiceSet['spd'], voiceSet['vol'])
             fullFile = os.path.join(self.voicePath, voiceFile)
             if os.path.isfile(fullFile):
                 aWd.append(voiceFile)
                 continue
-            if not self.prepareVoice(word, fullFile):
+            if not self.prepareVoice(word, fullFile, voiceSet):
                 aWd.append(None)
             else:
                 aWd.append(voiceFile)
         return aWords
 
-    def builderPinyin(self, aWords):
-        for aWd in aWords:
-            print(aWd)
-            word = aWd[1]
-            aWd.append(self.makePinyin(word))
-        return aWords
+    def buildeAnnouncer(self):
+        return self.builderVoice(self.ANNOUNCEVOICE, self.announceSet)
+
+    def prepareVoice(self, word, voiceFile, voiceSet=None):
+        if voiceSet:
+            voiceSet = self.dictateSet
+        voice = self.client.getVoice(word, voiceSet)
+        if voice is None:
+            print(('can not make voice of "%s"' % word))
+            return None
+        with open(voiceFile, 'wb') as f:
+            f.write(voice)
+        f.close()
+        return voiceFile
 
     def getVoice(self, aWords):
         for aWd in aWords:
@@ -150,15 +166,12 @@ class VoiceBuilder(object):
                 aWd.append(None)
         return aWords
 
-    def prepareVoice(self, word, voiceFile):
-        voice = self.client.getVoice(word, self.dictateSet)
-        if voice is None:
-            print(('can not make voice of "%s"' % word))
-            return None
-        with open(voiceFile, 'wb') as f:
-            f.write(voice)
-        f.close()
-        return voiceFile
+    def builderPinyin(self, aWords):
+        for aWd in aWords:
+            print(aWd)
+            word = aWd[1]
+            aWd.append(self.makePinyin(word))
+        return aWords
 
     def makePinyin(self, word):
         # uword = self.word.decode('utf-8')

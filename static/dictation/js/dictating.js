@@ -16,6 +16,7 @@ $(function(){
         fillWords(aWords,hWords);
 
         $.get('/dictation/makeVoice/', function(dic){
+            alert('get voice ok')
             aWords = dic.words;
             // ['id', 'word', 'pinyin', 'voice']
             // alert(aWords);
@@ -47,7 +48,7 @@ $(function(){
     // });
 
 
-
+    alert('player here')
     player = cyberplayer("playercontainer");
     $('#toPlay').click(function(){
         // wdPlay = [];

@@ -388,14 +388,18 @@ def makeVoice(request):
     # print(aWords)
     voicePath = os.path.join(happyproj.settings.BASE_DIR, 'static', 'dictation', 'voice')
     builder = voicebuilder.VoiceBuilder(voicePath)
+    logger.info('builde word voicefile')
     # ['id', 'word', 'pinyin', 'voice']
     builder.builderVoice(aWords)
+    logger.info('builde announcer voicefile')
+    aAnnouncer = builder.buildeAnnouncer()
     # request.session['words'] = aWords
     request.session['words'] = None
     logger.info('make voice ok.')
     logger.info(aWords)
     # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
     dRes = {'words': aWords}
+    dRes['announcer'] = aAnnouncer
     return JsonResponse(dRes)
     # return JsonResponse({'response':'ok'})
 
