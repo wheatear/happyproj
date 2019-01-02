@@ -22,7 +22,7 @@ $(function(){
             // ['id', 'word', 'pinyin', 'voice']
             // alert(aWords);
             announcer = dic.announcer;
-            alert(announcer[0]);
+            // alert(announcer[0]);
             // makePlayList(aWords);
             // alert(aPlayList);
             // playerSet(player,aPlayList);
@@ -70,6 +70,7 @@ $(function(){
         // hWords = $('#words');
         hWords.empty();
         player.play();
+        hPlay.attr("disabled","true");
         hCheck.removeAttr("disabled");
         // len = aPlayList.length;
         // alert(len)
@@ -244,15 +245,17 @@ $(function(){
     }
 
     $('#nextWord').click(function(){
+        player.next();
         // indx++;
-        player.playlistNext()
+        // player.playlistNext()
         //player.stop()
         //player.playlistNext();
     });
 
     $('#prevWord').click(function(){
+        player.prev();
         // indx--;
-        player.playlistPrev()
+        // player.playlistPrev()
         // hWords = $('#words');
         // var i = indx;
         //     var item = player.playlistItem(i);
@@ -270,12 +273,21 @@ $(function(){
     });
 
     $('#pause').click(function(){
-        var state = player.getState(); //state：{“playing”,“paused”,“idle”,“buffering”}
-        if(state=='playing') {
+        if($('#pause').innerText == '暂停') {
             player.pause();
-        } else if(state=='paused') {
-            player.play();
+            $('#pause').innerText = '继续'
         }
+        else {
+            player.continue();
+            $('#pause').innerText = '暂停'
+        }
+
+        // var state = player.getState(); //state：{“playing”,“paused”,“idle”,“buffering”}
+        // if(state=='playing') {
+        //     player.pause();
+        // } else if(state=='paused') {
+        //     player.play();
+        // }
     });
 
     $('#stop').click(function(){

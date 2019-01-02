@@ -30,26 +30,34 @@ var dictater= {
         if (this.status==0) {
             this.status = 1;
             this.playStart();
-            this.t = setTimeout("dictater.play()", 3000);
+            this.t = setTimeout("dictater.play()", 5000);
+            return;
+        }
+        if (this.status == 2){
+            return;
+        }
+        if (this.status == 9){
+            this.stop();
             return;
         }
         if (i>=this.aWords.length){
-            this.status = 9;
             this.playEnd();
+            this.stop();
             return;
         }
-        this.playOne(i);
+        playWord = this.aWords[i];
+        this.playOne(playWord);
         if (this.repeat == 0){ this.repeat++;}
         else {
             this.repeat = 0;
             this.cur++;
         }
-        this.t = setTimeout("dictater.play()", 2000)
+        slpTime=3000*playWord[1].length;
+        this.t = setTimeout("dictater.play()", slpTime)
     },
 
-    playOne: function(index){
-        // alert('word ' + index + this.aWords[index][1]);
-        this.musicDom.src = this.aWords[index][3];
+    playOne: function(playWord){
+        this.musicDom.src = playWord[3];
         this.musicDom.play();
     },
 
@@ -68,18 +76,36 @@ var dictater= {
         this.musicDom.play();
     },
 
-    //暂停音乐
+    //暂停
+    pause: function(){
+        this.status = 2;
+        this.repeat = 0;
+    },
+
+    //继续
+    continue: function(){
+        this.status = 3;
+        this.repeat = 0;
+        this.play();
+    },
+
+    //结束
     stop: function () {
-        this.musicDom.pause();
+        // this.musicDom.pause();
+        this.status = 9;
+        this.cur = 0;
+        this.repeat = 0;
     },
 
     //下一首（待编写）
     next: function () {
-
+        this.cur++;
+        this.repeat = 0;
     },
 
     //上一首（待编写）
     prev: function () {
-
+        this.cur--;
+        this.repeat = 0;
     }
 };

@@ -134,7 +134,7 @@ class VoiceBuilder(object):
         return self.builderVoice(self.ANNOUNCEVOICE, self.announceSet)
 
     def prepareVoice(self, word, voiceFile, voiceSet=None):
-        if voiceSet:
+        if not voiceSet:
             voiceSet = self.dictateSet
         voice = self.client.getVoice(word, voiceSet)
         if voice is None:
