@@ -397,6 +397,7 @@ def makeVoice(request):
     request.session['words'] = None
     logger.info('make voice ok.')
     logger.info(aWords)
+    logger.info(aAnnouncer)
     # jsonVoice = jsonArraySet(aWords, ['id', 'word', 'pinyin', 'voice'])
     dRes = {'words': aWords}
     dRes['announcer'] = aAnnouncer

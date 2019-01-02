@@ -119,12 +119,15 @@ class VoiceBuilder(object):
             voiceFile = '%s_%d%d%d%d.mp3' % (wordKey, voiceSet['per'], voiceSet['pit'], voiceSet['spd'], voiceSet['vol'])
             fullFile = os.path.join(self.voicePath, voiceFile)
             if os.path.isfile(fullFile):
-                aWd.append(voiceFile)
+                voiceReqPath = '/static/dictation/voice/%s' % voiceFile
+                aWd.append(voiceReqPath)
+                # aWd.append(voiceFile)
                 continue
             if not self.prepareVoice(word, fullFile, voiceSet):
                 aWd.append(None)
             else:
-                aWd.append(voiceFile)
+                voiceReqPath = '/static/dictation/voice/%s' % voiceFile
+                aWd.append(voiceReqPath)
         return aWords
 
     def buildeAnnouncer(self):

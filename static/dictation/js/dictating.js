@@ -11,6 +11,7 @@ var hWords;
 $(function(){
     $.get('/dictation/qryWords/', function(dic){
         aWords = dic.words;
+
         // alert('get words')
         hWords = $('#words');
         fillWords(aWords,hWords);
@@ -20,9 +21,12 @@ $(function(){
             aWords = dic.words;
             // ['id', 'word', 'pinyin', 'voice']
             // alert(aWords);
-            makePlayList(aWords);
+            announcer = dic.announcer;
+            alert(announcer[0]);
+            // makePlayList(aWords);
             // alert(aPlayList);
-            playerSet(player,aPlayList);
+            // playerSet(player,aPlayList);
+            player.setWords(aWords, announcer);
             hPlay.removeAttr("disabled");
             hPlay.html('开始听写');
             // hPlay.disabled = false;
@@ -31,6 +35,7 @@ $(function(){
     // alert('player here')
     // player = cyberplayer("playercontainer");
     player = dictater;
+    player.init();
 
     hDisp = $('#dispWord');
     hPlay = $('#toPlay');
