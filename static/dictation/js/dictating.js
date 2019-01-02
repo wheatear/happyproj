@@ -28,6 +28,10 @@ $(function(){
             // hPlay.disabled = false;
         });
     });
+    // alert('player here')
+    // player = cyberplayer("playercontainer");
+    player = dictater;
+
     hDisp = $('#dispWord');
     hPlay = $('#toPlay');
     hCheck = $('#checkWord');
@@ -48,8 +52,7 @@ $(function(){
     // });
 
 
-    alert('player here')
-    player = cyberplayer("playercontainer");
+
     $('#toPlay').click(function(){
         // wdPlay = [];
         // $('.word').each(function(i,w){
