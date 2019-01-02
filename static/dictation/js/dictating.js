@@ -16,7 +16,7 @@ $(function(){
         fillWords(aWords,hWords);
 
         $.get('/dictation/makeVoice/', function(dic){
-            alert('get voice ok')
+            // alert('get voice ok');
             aWords = dic.words;
             // ['id', 'word', 'pinyin', 'voice']
             // alert(aWords);
