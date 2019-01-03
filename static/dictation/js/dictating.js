@@ -27,6 +27,7 @@ $(function(){
             // alert(aPlayList);
             // playerSet(player,aPlayList);
             player.setWords(aWords, announcer);
+            // player.onLoad = dispPinyin;
             hPlay.removeAttr("disabled");
             hPlay.html('开始听写');
             // hPlay.disabled = false;
@@ -69,9 +70,9 @@ $(function(){
         // alert(wdPlay);
         // hWords = $('#words');
         hWords.empty();
-        player.play();
+        player.start();
         hPlay.attr("disabled","true");
-        hCheck.removeAttr("disabled");
+
         // len = aPlayList.length;
         // alert(len)
         // hWords = $('#words');
@@ -233,6 +234,9 @@ $(function(){
         return aPlayList;
     }
 
+    function dispPinyin(sPinyin) {
+        hWords.append('<label class="py'+plen+' un" code='+code+'>'+sPinyin+'</label>');
+    }
 
     function sleep(n) {
         var start = new Date().getTime();
@@ -273,13 +277,14 @@ $(function(){
     });
 
     $('#pause').click(function(){
-        if($('#pause').innerText == '暂停') {
+        // alert('pause text: ' + $('#pause').text());
+        if($('#pause').text() == '暂停') {
             player.pause();
-            $('#pause').innerText = '继续'
+            $('#pause').text('继续');
         }
         else {
             player.continue();
-            $('#pause').innerText = '暂停'
+            $('#pause').text('暂停');
         }
 
         // var state = player.getState(); //state：{“playing”,“paused”,“idle”,“buffering”}

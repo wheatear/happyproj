@@ -84,7 +84,7 @@ class VoiceBuilder(object):
     APP_ID = '10568246'
     API_KEY = '6cFFqOMdPr3EIYx4uEpYsD4s'
     SECRET_KEY = '6e2c9e550e3358d1e6fd85030115ae36'
-    ANNOUNCEVOICE = [['1', '开始听写'], ['2', '听写完毕']]
+    ANNOUNCEVOICE = [['1', '开始听写'], ['2', '听写完毕'], ['3', '听写暂停'], ['4', '听写继续'], ['5', '结束听写']]
 
     def __init__(self, path):
         self.announceSet = {}
