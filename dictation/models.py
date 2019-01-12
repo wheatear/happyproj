@@ -77,10 +77,10 @@ class ChoiceSelectedManager(models.Manager):
         return chse
 
 class ChoiceSelected(models.Model):
-    choicename=models.CharField(max_length=20,unique=True)
+    choicename=models.CharField(max_length=20)
     choicevalue=models.CharField(max_length=100, null=True, blank=True)
     choicecode = models.IntegerField(null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userid')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_column='userid',default=1)
     class Meta:
         db_table='lw_choiceselected'
     objects = ChoiceSelectedManager()
@@ -123,7 +123,7 @@ class Test(models.Model):
     book = models.ForeignKey(Book, None, db_column='bookid')
     unit = models.ForeignKey(Unit, None, db_column='unitid',null=True)
     lesson = models.ForeignKey(Lesson, None, db_column='lessonid',null=True)
-    user = models.ForeignKey(User, None, db_column='userid')
+    user = models.ForeignKey(User, None, db_column='userid',default=1)
     tests = TestManager()
     def __str__(self):
         return '%s %s' % (self.id, self.testname)
@@ -142,7 +142,7 @@ class TestWordManager(models.Manager):
 class TestWord(models.Model):
     test=models.ForeignKey(Test,None,db_column='testid')
     wrong=models.BooleanField(db_column='wrong',default=False)
-    word=models.ForeignKey(Word,None,db_column='wordid')
+    word=models.ForeignKey(Word,None,db_column='wordid',null=True)
 
     class Meta:
         db_table='lw_testwords'
@@ -160,7 +160,7 @@ class ChoiceManager(models.Manager):
 class Choice(models.Model):
     type=models.CharField(max_length=20,db_column='choicetype',default='time')
     name=models.CharField(max_length=50,db_column='choicename')
-    condition=models.CharField(max_length=60)
+    condition=models.CharField(max_length=60,null=True)
 
     class Meta:
         db_table='lw_choice'

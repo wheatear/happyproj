@@ -133,6 +133,8 @@ log/
 voice/
 db.sqlite3
 lessonwords.db
+*.json
+dictation/migrations/*
 <<<<<<< HEAD
 =======
 

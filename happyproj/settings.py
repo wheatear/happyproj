@@ -82,14 +82,25 @@ WSGI_APPLICATION = 'happyproj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# sqlite
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'lessonwords.db'),
+#     }
+# }
 
+# mysql
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'lessonwords.db'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'dic',
+        'USER':'happy',
+        'PASSWORD':'MyPass@123',
+        'HOST':'148.70.66.254',
+        'PORT':'3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
