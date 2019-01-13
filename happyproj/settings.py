@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'happyproj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dic',
+        'NAME': 'dictest',
         'USER':'happy',
         'PASSWORD':'MyPass@123',
         'HOST':'148.70.66.254',
@@ -140,10 +140,11 @@ USE_TZ = False  #True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT='/data/web/happyproj/static/'
+# STATIC_ROOT='/data/web/happyproj/static/'
+STATIC_ROOT=os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'commstatic'),
 ]
 
 

@@ -23,7 +23,7 @@ urlpatterns = [
     path(r'favicon.ico',RedirectView.as_view(url=r'static/favicon.ico')),
     path(r'MP_verify_EddIaEBDpA3ond3X.txt',RedirectView.as_view(url=r'static/MP_verify_EddIaEBDpA3ond3X.txt')),
     path('admin/', admin.site.urls),
-    path('', dviews.index),
+    path('', RedirectView.as_view(url=r'dictation/')),
     path(r'dictation/', include('dictation.urls')),
     path(r'login/', views.login),
     path(r'logout/', views.logout),
