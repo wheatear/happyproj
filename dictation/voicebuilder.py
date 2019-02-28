@@ -110,6 +110,7 @@ class VoiceBuilder(object):
             voiceSet = self.dictateSet
         for aWd in aWords:
             logger.info('builde voice for %s', aWd)
+            # aWd: ['id', 'word', 'pinyin', 'voice']
             word = aWd[1]
             if len(aWd) > 3 and aWd[3]:
                 continue
