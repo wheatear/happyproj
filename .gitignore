@@ -128,6 +128,7 @@ venv.bak/
 Python.gitignore
 *.bak
 *.pinyin
+commstatic/
 log/
 .idea/
 voice/
