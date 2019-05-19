@@ -106,3 +106,6 @@ def register(request):
 
     return render(request, 'login/register.html', locals())
     # return render(request, 'login/register.html')
+
+def page_not_found(request):
+    return render(request, '404.html')

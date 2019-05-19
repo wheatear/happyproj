@@ -29,3 +29,5 @@ urlpatterns = [
     path(r'logout/', views.logout),
     path(r'register/', views.register),
 ]
+handler404 = "login.views.page_not_found"
+
