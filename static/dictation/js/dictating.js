@@ -35,6 +35,8 @@ $(function(){
     });
     // alert('player here')
     // player = cyberplayer("playercontainer");
+
+
     player = dictater;
     player.init();
 
@@ -320,6 +322,11 @@ $(function(){
     //     //     repeat=0;
     //     // }
     // });
+    // hWords = $('#words');
+    // hWords.delegate('label', 'click', function(event){
+    //     alert($(this).html);
+    //     $(this).toggleClass("se");
+    // });
 
     // fill wordes
     function fillWords(aWords,hWords){
@@ -332,18 +339,25 @@ $(function(){
 
             hWords.append('<label class="word'+plen+' un" id='+code+'>'+dispName+'</label>');
         });
-        $('.word').click(function(){
+        // $('.word').click(function(){
+        //     $(this).toggleClass("se");
+        // })
+        // $('.word2').click(function(){
+        //     $(this).toggleClass("se");
+        // })
+        $('.word3').click(function(){
             $(this).toggleClass("se");
-        })
-        $('.word2').click(function(){
-            $(this).toggleClass("se");
-        })
-        $('.word4').click(function(){
-            $(this).toggleClass("se");
-        })
-        $('.word6').click(function(){
-            $(this).toggleClass("se");
-        })
+        });
+        // $('.word4').click(function(){
+        //     $(this).toggleClass("se");
+        // })
+        // $('.word6').click(function(){
+        //     $(this).toggleClass("se");
+        // })
+        // hWords.delegate('label', 'click', function(event){
+        //     alert($(this).html);
+        //     $(this).toggleClass("se");
+        // });
     }
 
 });
