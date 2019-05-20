@@ -322,11 +322,11 @@ $(function(){
     //     //     repeat=0;
     //     // }
     // });
-    // hWords = $('#words');
-    // hWords.delegate('label', 'click', function(event){
-    //     alert($(this).html);
-    //     $(this).toggleClass("se");
-    // });
+    hWords = $('#words');
+    hWords.delegate('label', 'click', function(event){
+        // alert($(this).html);
+        $(this).toggleClass("se");
+    });
 
     // fill wordes
     function fillWords(aWords,hWords){
@@ -345,9 +345,9 @@ $(function(){
         // $('.word2').click(function(){
         //     $(this).toggleClass("se");
         // })
-        $('.word3').click(function(){
-            $(this).toggleClass("se");
-        });
+        // $('.word3').click(function(){
+        //     $(this).toggleClass("se");
+        // });
         // $('.word4').click(function(){
         //     $(this).toggleClass("se");
         // })
