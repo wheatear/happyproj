@@ -1,7 +1,7 @@
 
 var aWords=[];
 var aPlayList=[];
-var player;
+// var player;
 var indx=0;
 var playState=1;   //0: paused   1:playing   2:stop
 // var repeat=0;
