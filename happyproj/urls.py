@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path
 from login import views
 from dictation import views as dviews
+from hcm import views as hcmViews
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path(r'login/', views.login),
     path(r'logout/', views.logout),
     path(r'register/', views.register),
+    path(r'mathcorrection/', hcmViews.mathCorrection),
 ]
 handler404 = "login.views.page_not_found"
 
