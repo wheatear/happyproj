@@ -16,14 +16,14 @@ $(function(){
         // then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序
         // 避免数据没有获取到
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            alert("getmedia new");
+            // alert("getmedia new");
             var promise = navigator.mediaDevices.getUserMedia(constraints);
             promise.then(function (MediaStream) {
                 video.srcObject = MediaStream;
                 video.play();
             });
         }else if (navigator.getMedia) {
-            alert("getmedia old");
+            // alert("getmedia old");
             navigator.getMedia({
                 video: true
             }, function(stream) {
@@ -42,6 +42,6 @@ $(function(){
       var video = document.getElementById("video");
       var canvas = document.getElementById("canvas");
       var ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, 500, 500);
+      ctx.drawImage(video,0,0,300,300);
     })
 });

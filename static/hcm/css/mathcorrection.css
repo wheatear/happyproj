@@ -1,9 +1,11 @@
 video{
-    width:500px;
-    height: 500px;
+    width:300px;
+    height: 300px;
+    background-color: #1e7e34;
 }
 
-canvas{
-    width:500px;
-    height: 500px;
-}
+/*canvas{*/
+    /*width:300px;*/
+    /*height: 300px;*/
+    /*background-color: #f5dd5d;*/
+/*}*/
