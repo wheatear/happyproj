@@ -4,8 +4,38 @@ video{
     background-color: #1e7e34;
 }
 
-/*canvas{*/
+canvas{
     /*width:300px;*/
     /*height: 300px;*/
-    /*background-color: #f5dd5d;*/
-/*}*/
+    background-color: #f5dd5d;
+}
+
+.pop_con{
+    display:none;
+}
+
+.pop{
+    width:400px;
+    /*height:400px;*/
+    padding:6px;
+    background-color:#fff;
+    border:1px solid #000;
+    position:fixed;
+    left:50%;
+    top:50%;
+    margin-left:-200px;
+    margin-top:-150px;
+    z-index:9999;
+}
+
+.mask{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background-color:#000;
+    left:0;
+    top:0;
+    opacity:0.3;
+    filter:alpha(opacity=30);
+    z-index:9990;
+}

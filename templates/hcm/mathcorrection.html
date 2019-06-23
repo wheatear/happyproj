@@ -13,13 +13,31 @@
     <script src="/static/dictation/js/popper.min.js" ></script>
     <script src="/static/dictation/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="/static/hcm/css/mathcorrection.css?v=1.0.8">
-    <script type="text/javascript" src="/static/hcm/js/mathcorrection.js?v=1.0.23"></script>
+    <link rel="stylesheet" type="text/css" href="/static/hcm/css/mathcorrection.css?v=1.0.11">
+    <script type="text/javascript" src="/static/hcm/js/mathcorrection.js?v=1.0.42"></script>
 </head>
 <body>
-<input type="button" class="btn" id="getMedia" value="开启摄像头"/>
-<video id="video" autoplay="autoplay"></video>
+<div>
+    <input type="button" class="btn" id="getMedia" value="作业拍摄"/>
+{#    <input type="button" class="btn" id="disPop" value="disPop"/>#}
+    <input type="button" class="btn" id="save" value="作业保存">
+    <input type="button" class="btn" id="correct" value="作业判错">
+</div>
+
 <canvas id="canvas" width="300" height="300"></canvas>
-<input type="button" class="btn" id="snap" value="拍照"/>
+
+<div class="pop_con" id="getCamera">
+    <div class="pop">
+        <video id="video" autoplay="autoplay"></video>
+        <div>
+            <input type="button" class="btn" id="switch" value="切换前后"/>
+            <input type="button" class="btn" id="snap" value="拍  照"/>
+            <input type="button" class="btn" id="exit" value="退出"/>
+        </div>
+    </div>
+
+
+    <div class="mask"></div>
+</div>
 </body>
 </html>
