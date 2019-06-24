@@ -1,16 +1,21 @@
 var $getCamera,
     mediaStreamTrack,
     front = false,
-    video;
+    video,
+    canvas,
+    hwFile;
 
 $(function(){
     $("#getMedia").click(function(){
         $getCamera = $("#getCamera");
         $getCamera.show();
 
+        canvas = document.getElementById("canvas");
+        video = document.getElementById("video");
+
         var constraints = {
             video: { facingMode: (front? "user" : "environment"),
-            width: 500, height: 500},
+            width: 420, height: 594},
             audio: false
         };
         // 获取媒体方法（旧方法）
@@ -47,15 +52,29 @@ $(function(){
         }
     });
 
+    $("#save").click(function(){
+        dMath = {homework: canvas.toDataURL('image/png')};
+        $.ajax({
+            url: "uploadMath/",
+            type: "POST",
+            data: dMath
+        }).done(function(rs){
+            hwFile = rs.mathFile;
+            alert("上传作业成功。")
+        }).fail(function(){
+            alert("上传作业失败。")
+        })
+    });
+
     $("#snap").click(function(){
         $getCamera.hide();
 
         //获得Canvas对象
-        var video = document.getElementById("video");
+        // var video = document.getElementById("video");
 
-        var canvas = document.getElementById("canvas");
+        // var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext('2d');
-        ctx.drawImage(video,0,0,300,300);
+        ctx.drawImage(video,0,0,420,594);
 
         // close camera
         mediaStreamTrack && mediaStreamTrack.stop();
@@ -65,7 +84,7 @@ $(function(){
         front = !front;
         var constraints = {
             video: { facingMode: (front? "user" : "environment"),
-            width: 500, height: 500},
+            width: 420, height: 594},
             audio: false
         };
 

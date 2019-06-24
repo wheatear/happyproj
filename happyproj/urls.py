@@ -29,7 +29,7 @@ urlpatterns = [
     path(r'login/', views.login),
     path(r'logout/', views.logout),
     path(r'register/', views.register),
-    path(r'mathcorrection/', hcmViews.mathCorrection),
+    path(r'mathcorrection/', include('hcm.urls')),
 ]
 handler404 = "login.views.page_not_found"
 
