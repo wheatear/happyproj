@@ -5,7 +5,7 @@ urlpatterns = [
     # html
     url(r'^$', views.mathCorrection),
     url(r'^index$', views.mathCorrection),
-    url(r'^uploadMath/$', views.uploadMath),
+    url(r'^uploadMath$', views.uploadMath),
     url(r'^correct/$', views.correct),
     # url(r'^wordimport/$', views.wordImport),
 

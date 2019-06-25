@@ -15,7 +15,7 @@ $(function(){
 
         var constraints = {
             video: { facingMode: (front? "user" : "environment"),
-            width: 420, height: 594},
+            width: 300, height: 300},
             audio: false
         };
         // 获取媒体方法（旧方法）
@@ -55,7 +55,7 @@ $(function(){
     $("#save").click(function(){
         dMath = {homework: canvas.toDataURL('image/png')};
         $.ajax({
-            url: "uploadMath/",
+            url: "/mathcorrection/uploadMath",
             type: "POST",
             data: dMath
         }).done(function(rs){
@@ -74,7 +74,7 @@ $(function(){
 
         // var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext('2d');
-        ctx.drawImage(video,0,0,420,594);
+        ctx.drawImage(video,0,0,300,300);
 
         // close camera
         mediaStreamTrack && mediaStreamTrack.stop();
@@ -84,7 +84,7 @@ $(function(){
         front = !front;
         var constraints = {
             video: { facingMode: (front? "user" : "environment"),
-            width: 420, height: 594},
+            width: 300, height: 300},
             audio: false
         };
 
