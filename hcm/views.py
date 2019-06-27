@@ -3,8 +3,16 @@ from django.http import HttpResponse, JsonResponse
 from django.http import FileResponse
 import happyproj.settings
 
+from tencentcloud.common import credential
+from tencentcloud.common.profile.client_profile import ClientProfile
+from tencentcloud.common.profile.http_profile import HttpProfile
+from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
+from tencentcloud.hcm.v20181106 import hcm_client, models
+
 import os,logging,time
 import base64
+import urllib
+
 
 # Create your views here.
 
@@ -38,4 +46,36 @@ def uploadMath(request):
 
 
 def correct(request):
-    pass
+    logger.info('correct math homework')
+    rs = None
+    if request.method == "POST":
+        file = request.POST.get("hwImg", None)
+        mathUrl = "https://193.112.63.237/static/hcm/homework/%s" % file
+        fullFile = os.path.join(happyproj.settings.STATIC_ROOT, 'hcm', 'homework',file)
+        with open(fullFile, 'rb') as f:
+            img = f.read()
+        b64Str = base64.b64encode(img)
+        logger.debug("mathUrl: %s", mathUrl)
+        try:
+            cred = credential.Credential("AKIDNcbKo3PlKekbDbJcEhvzmLegSyKQguHO", "2GIxRgfOvFK93oIWYK0Sr1uXx83h5DY9")
+            httpProfile = HttpProfile()
+            httpProfile.endpoint = "hcm.tencentcloudapi.com"
+
+            clientProfile = ClientProfile()
+            clientProfile.httpProfile = httpProfile
+            client = hcm_client.HcmClient(cred, "ap-guangzhou", clientProfile)
+
+            req = models.EvaluationRequest()
+            # params = '{"SessionId":"hcm1","HcmAppid":"hcm_1001479","Url":mathUrl,"RejectNonArithmeticImage":true}'
+            params = '{"SessionId":"hcm1","HcmAppid":"hcm_1001479","Image":"%s","RejectNonArithmeticImage":true}' % str(b64Str,"utf-8")
+            # logger.debug(params)
+            req.from_json_string(params)
+
+            resp = client.Evaluation(req)
+            logger.info(resp.to_json_string())
+            rs = resp.to_json_string()
+
+
+        except TencentCloudSDKException as err:
+            logger.error(err)
+    return JsonResponse({'mathCorrection': resp.to_json_string()})
