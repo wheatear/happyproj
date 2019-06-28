@@ -89,7 +89,8 @@ $(function(){
             data: {hwImg: hwFile}
         }).done(function(rs){
             hwResult = rs.mathCorrection;
-            alert("mark result");
+            alert("mark result: "+hwResult);
+            // hcmRes =
             markResult(hwResult);
             // alert("作业批改成功。")
         }).fail(function(){
@@ -100,14 +101,17 @@ $(function(){
     function markResult(hwResult){
         items = hwResult["Items"];
         var res = "\2713";
+        alert("mark items" + items);
+        ctx = canvas.getContext("2d");
         $.each(items, function(i, n){
+            alert(n);
             res = "\2713";
             var x,y;
-            if (n["Item"] === "NO") {res = "2717"}
+            if (n["Item"] === "NO") {res = "\2717"}
             x = n["ItemCoord"]["X"];
             y = n["ItemCoord"]["Y"];
             alert("markresult: "+res +"("+x+","+y+")");
-            canvas.fillText(res, x, y)
+            ctx.fillText(res, x, y)
         })
     }
 
@@ -117,6 +121,7 @@ $(function(){
     $("#correct").click(function(){
         // alert("correct math homework");
         // alert(hwFile);
+        hwFile = "mathImg_20190627064622";
         if(!hwFile){
             // alert("upload img");
             uploadMathImg(correct);

@@ -12,6 +12,7 @@ from tencentcloud.hcm.v20181106 import hcm_client, models
 import os,logging,time
 import base64
 import urllib
+import json
 
 
 # Create your views here.
@@ -78,4 +79,4 @@ def correct(request):
 
         except TencentCloudSDKException as err:
             logger.error(err)
-    return JsonResponse({'mathCorrection': resp.to_json_string()})
+    return JsonResponse({'mathCorrection': json.loads(resp.to_json_string())})
