@@ -42,7 +42,7 @@ $(function(){
         // 避免数据没有获取到
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             // alert("getmedia new");
-            promise = navigator.mediaDevices.getUserMedia(constraintsComm);
+            promise = navigator.mediaDevices.getUserMedia(constraints);
             promise.then(function (MediaStream) {
                 mediaStreamTrack = typeof MediaStream.stop === 'function' ? MediaStream : MediaStream.getTracks()[0];
                 console.log(mediaStreamTrack);
@@ -89,8 +89,7 @@ $(function(){
             data: {hwImg: hwFile}
         }).done(function(rs){
             hwResult = rs.mathCorrection;
-            alert("mark result: "+hwResult);
-            // hcmRes =
+            // alert("mark result: "+hwResult);
             markResult(hwResult);
             // alert("作业批改成功。")
         }).fail(function(){
@@ -98,20 +97,28 @@ $(function(){
         })
     }
 
-    function markResult(hwResult){
-        items = hwResult["Items"];
+    function markResult(hw){
+        items = hw["Items"];
         var res = "\2713";
-        alert("mark items" + items);
+        // alert("mark items" + items);
         ctx = canvas.getContext("2d");
+        var x,y,w,h;
         $.each(items, function(i, n){
-            alert(n);
+            // alert(n);
             res = "\2713";
-            var x,y;
-            if (n["Item"] === "NO") {res = "\2717"}
+
             x = n["ItemCoord"]["X"];
             y = n["ItemCoord"]["Y"];
-            alert("markresult: "+res +"("+x+","+y+")");
-            ctx.fillText(res, x, y)
+            w = n["ItemCoord"]["Width"];
+            h = n["ItemCoord"]["Height"];
+            if (n["Item"] === "NO") {
+                res = "\2717";
+                ctx.fillStyle = "rgb(200,0,0,0.5)";
+                ctx.fillRect (x, y, w, h);
+            }
+
+            // alert("markresult: "+res +"("+x+","+y+")");
+            // ctx.fillText(res, x, y)
         })
     }
 
@@ -121,7 +128,7 @@ $(function(){
     $("#correct").click(function(){
         // alert("correct math homework");
         // alert(hwFile);
-        hwFile = "mathImg_20190627064622";
+        // hwFile = "mathImg_20190627064622";
         if(!hwFile){
             // alert("upload img");
             uploadMathImg(correct);
@@ -131,6 +138,22 @@ $(function(){
 
     });
 
+    $("#answerBtn").click(function(){
+        items = hwResult["Items"];
+
+        ctx = canvas.getContext("2d");
+        var sAnswer="";
+        $.each(items, function(i, n){
+            // alert(n["Item"]);
+            if (n["Item"] === "NO") {
+                sAnswer += n["Answer"]+"<br>";
+            }else{
+                sAnswer += n["ItemString"]+"<br>";
+            }
+        });
+        // alert(sAnswer);
+        $("#answerDiv").html(sAnswer)
+    });
 
     $("#snap").click(function(){
         $getCamera.hide();
