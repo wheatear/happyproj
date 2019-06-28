@@ -103,7 +103,9 @@ $(function(){
         // alert("mark items" + items);
         ctx = canvas.getContext("2d");
         var x,y,w,h;
+        var itemNum = errNum = 0;
         $.each(items, function(i, n){
+            itemNum++;
             // alert(n);
             res = "\2713";
 
@@ -113,13 +115,19 @@ $(function(){
             h = n["ItemCoord"]["Height"];
             if (n["Item"] === "NO") {
                 res = "\2717";
+                errNum++;
                 ctx.fillStyle = "rgb(200,0,0,0.5)";
                 ctx.fillRect (x, y, w, h);
             }
 
             // alert("markresult: "+res +"("+x+","+y+")");
             // ctx.fillText(res, x, y)
-        })
+        });
+        if (errNum === 0){
+            alert(itemNum + "题全部正确！")
+        }else{
+            alert("共"+itemNum + "题，错"+ errNum + "题！")
+        }
     }
 
     $("#save").click(uploadMathImg);

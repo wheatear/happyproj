@@ -15,16 +15,18 @@ canvas{
 }
 
 .pop{
-    width:350px;
+    width:320px;
     /*height:400px;*/
     padding:6px;
     background-color:#fff;
     border:1px solid #000;
     position:fixed;
-    left:50%;
-    top:50%;
-    margin-left:-200px;
-    margin-top:-150px;
+    left: 10px;
+    top: 50px;
+    /*left:50%;*/
+    /*top:50%;*/
+    /*margin-left:-200px;*/
+    /*margin-top:-250px;*/
     z-index:9999;
 }
 
