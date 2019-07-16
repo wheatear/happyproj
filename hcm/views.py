@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.http import FileResponse
 import happyproj.settings
+from login.views import check_login
 
 from tencentcloud.common import credential
 from tencentcloud.common.profile.client_profile import ClientProfile
@@ -20,6 +21,7 @@ import json
 logger = logging.getLogger('django')
 errlog = logging.getLogger('error')
 
+@check_login
 def mathCorrection(request):
     # request.session['ip'] = ip
     # extra = getExtra(request)

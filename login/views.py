@@ -18,6 +18,7 @@ def check_login(f):
             request.session.set_expiry(1800)
             return f(request,*arg,**kwargs)
         else:
+            request.session['reqPath'] = request.path
             return redirect('/login/')
     return inner
 
@@ -44,7 +45,8 @@ def login(request):
                 if user.passwd == password:
                     request.session['isLogin'] = '1'
                     request.session['userId'] = user.id
-                    return redirect('/dictation/')
+                    reqPath = request.session.get('reqPath', default='/dictation/')
+                    return redirect(reqPath)
                 else:
                     message = "密码不正确！"
             except:
