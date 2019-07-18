@@ -144,4 +144,8 @@ ul{
     margin:4px auto 0;
 }
 
+@font-face {
+	font-family:米开天涯楷书;
+	src: url('/static/dictation/fonts/米开天涯楷书.ttf');
+}
 

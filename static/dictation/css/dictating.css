@@ -1,4 +1,9 @@
 
+@font-face {
+	font-family:米开天涯楷书;
+	src: url('/static/dictation/fonts/米开天涯楷书.ttf');
+}
+
 .word,.word1,.word2,.word3,.word4,.word5,.word6,.py1,.py2,.py3,.py4,.py5,.py6{
     border:1px solid red;
     float:left;
@@ -6,7 +11,7 @@
     height:32px;
     margin:5px 10px;
     text-align:center;
-    font:20px/30px '微软雅黑';
+    font:20px/30px '米开天涯楷书';
     overflow:auto;
 }
 .word1,.word2{
