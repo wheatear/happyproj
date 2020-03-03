@@ -19,7 +19,7 @@ class AipClient(object):
         self.appId = appId
         self.apiKey = apiKey
         self.secretKey = secretKey
-        self.lang = 'zh' #语言选择,填写zh
+        self.lang = 'zh' #语言选择,目前就一种中英混合，填写zh
         self.ctp = 1 #客户端类型选择，web端填写1
         self.voiceCfg = {}
         self.client = AipSpeech(appId, apiKey, secretKey)

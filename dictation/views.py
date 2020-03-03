@@ -45,7 +45,7 @@ def index(request):
     # logger = LoggerAdapter(initLogger,extra)
 
     # logger.info('access',extra)
-    return render(request,'dictation/index.html')
+    return render(request, 'dictation/index.html')
 
 @check_login
 @logRequest
@@ -53,7 +53,7 @@ def initQry(request):
     userId = request.session['userId']
     if not userId:
         return None
-    choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.filter(user=userId), ['choicename','choicecode'])
+    choiceSelected = jsonDict(dictation.models.ChoiceSelected.objects.filter(user=userId), ['choicename', 'choicecode'])
     # request.session['choiceSelected'] = choiceSelected
     logger.info('choiceSelected: %s', choiceSelected)
     # logger.info(choiceSelected)
