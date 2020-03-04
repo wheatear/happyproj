@@ -335,9 +335,9 @@ $(function(){
             var code = aWd[0];
             // alert(aWd);
             var dispName = aWd[1];
-            plen=dispName.length;
+            dl = dispLength(dispName);
 
-            hWords.append('<label class="word'+plen+' un" id='+code+'>'+dispName+'</label>');
+            hWords.append('<label class="word'+dl+' un" id='+code+'>'+dispName+'</label>');
         });
         // $('.word').click(function(){
         //     $(this).toggleClass("se");
@@ -358,6 +358,19 @@ $(function(){
         //     alert($(this).html);
         //     $(this).toggleClass("se");
         // });
+    }
+
+    // display length of word
+    function dispLength(word){
+        wl = word.length;
+        if (word.charCodeAt(0) < 256){
+            dl = Math.ceil(wl/4);
+        } else{
+            dl = wl;
+        }
+        if (dl > 6){dl = 6;}
+        // alert("word display length: " + dl);
+        return dl;
     }
 
 });
