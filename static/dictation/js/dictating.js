@@ -39,6 +39,7 @@ $(function(){
 
     player = dictater;
     player.init();
+    player.onPrePlay = dispPinyin;
 
     hDisp = $('#dispWord');
     hPlay = $('#toPlay');
@@ -236,9 +237,9 @@ $(function(){
         return aPlayList;
     }
 
-    function dispPinyin(sPinyin) {
-        hWords.append('<label class="py'+plen+' un" code='+code+'>'+sPinyin+'</label>');
-    }
+    // function dispPinyin(sPinyin) {
+    //     hWords.append('<label class="py'+plen+' un" code='+code+'>'+sPinyin+'</label>');
+    // }
 
     function sleep(n) {
         var start = new Date().getTime();
@@ -375,6 +376,26 @@ $(function(){
 
     function isEnglish(word){
         return word.charCodeAt(0) < 256;
+    }
+
+    // display pinyin
+    function dispPinyin(sWord){
+        // ['id', 'word', 'pinyin', 'voice']
+        hWords = $('#words');
+        code = sWord[0];
+        word = sWord[1];
+        if (isEnglish(word)){
+            wl = word.length;
+            dl = Math.ceil(wl/4);
+            if (dl > 6){dl = 6;}
+            hWords.append('<label class="word'+dl+' un" code='+code+'></label>');
+        } else{
+            sPinyin = sWord[2];
+            plen = sPinyin.length;
+            dispStr = sPinyin.join(' ');
+            hWords.append('<label class="py'+plen+' un" code='+code+'>'+dispStr+'</label>');
+        }
+
     }
 
 });

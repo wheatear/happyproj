@@ -25,6 +25,7 @@ var dictater= {
     repeat: 0,
 
     // events
+    onPrePlay: null,
     onLoad: null,
     onComplete: null,
 
@@ -60,7 +61,8 @@ var dictater= {
 
         if (this.repeat == 0){
             this.setSrc(playWord);
-            this.dispWord(playWord);
+            // this.dispWord(playWord);
+            this.onPrePlay(playWord);
             this.repeat++;
         } else {
             this.repeat = 0;
@@ -175,25 +177,5 @@ var dictater= {
         this.repeat = 0;
         this.play();
     },
-
-    dispWord: function(sWord){
-        // ['id', 'word', 'pinyin', 'voice']
-        hWords = $('#words');
-        code = sWord[0];
-        word = sWord[1];
-        if (isEnglish(word)){
-            wl = word.length;
-            dl = Math.ceil(wl/4);
-            if (dl > 6){dl = 6;}
-            hWords.append('<label class="word'+dl+' un" code='+code+'></label>');
-        } else{
-            sPinyin = sWord[2];
-            plen = sPinyin.length;
-            dispStr = sPinyin.join(' ');
-            hWords.append('<label class="py'+plen+' un" code='+code+'>'+dispStr+'</label>');
-        }
-
-    }
-
 
 };
