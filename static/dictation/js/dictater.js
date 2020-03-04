@@ -1,4 +1,19 @@
 
+function isEnglish(word){
+        return word.charCodeAt(0) < 256;
+}
+
+function sleepLength(word){
+        wl = word.length;
+        if (isEnglish(word)){
+            dl = Math.ceil(wl/3) * 1000;
+        } else{
+            dl = 3000*wl;
+        }
+        return dl;
+    }
+
+
 var dictater= {
 
     musicDom: null, //播放器对象
@@ -52,7 +67,7 @@ var dictater= {
             this.cur++;
         }
         this.playOne(playWord);
-        slpTime=3000*playWord[1].length;
+        slpTime=sleepLength(playWord[1]);
         this.t = setTimeout("dictater.play()", slpTime)
     },
 
@@ -162,12 +177,22 @@ var dictater= {
     },
 
     dispWord: function(sWord){
+        // ['id', 'word', 'pinyin', 'voice']
         hWords = $('#words');
         code = sWord[0];
-        sPinyin = sWord[2];
-        plen = sPinyin.length;
-        dispStr = sPinyin.join(' ');
-        hWords.append('<label class="py'+plen+' un" code='+code+'>'+dispStr+'</label>');
+        word = sWord[1];
+        if (isEnglish(word)){
+            wl = word.length;
+            dl = Math.ceil(wl/4);
+            if (dl > 6){dl = 6;}
+            hWords.append('<label class="word'+dl+' un" code='+code+'></label>');
+        } else{
+            sPinyin = sWord[2];
+            plen = sPinyin.length;
+            dispStr = sPinyin.join(' ');
+            hWords.append('<label class="py'+plen+' un" code='+code+'>'+dispStr+'</label>');
+        }
+
     }
 
 

@@ -363,7 +363,7 @@ $(function(){
     // display length of word
     function dispLength(word){
         wl = word.length;
-        if (word.charCodeAt(0) < 256){
+        if (isEnglish(word)){
             dl = Math.ceil(wl/4);
         } else{
             dl = wl;
@@ -371,6 +371,10 @@ $(function(){
         if (dl > 6){dl = 6;}
         // alert("word display length: " + dl);
         return dl;
+    }
+
+    function isEnglish(word){
+        return word.charCodeAt(0) < 256;
     }
 
 });

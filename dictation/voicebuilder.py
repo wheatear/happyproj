@@ -37,6 +37,7 @@ class AipClient(object):
     def getVoice(self, tex, voiceCfg=None):
         if voiceCfg == None:
             voiceCfg = self.voiceCfg
+
         voice = self.client.synthesis(tex, self.lang, self.ctp, voiceCfg)
         if not isinstance(voice, dict):
             return voice
@@ -112,6 +113,8 @@ class VoiceBuilder(object):
             logger.info('builde voice for %s', aWd)
             # aWd: ['id', 'word', 'pinyin', 'voice']
             word = aWd[1]
+            if ord(word[0]) < 256:
+                voiceSet['spd'] = 5  # 英文默认语速为5
             if len(aWd) > 3 and aWd[3]:
                 continue
             aWd.append(self.makePinyin(word))
