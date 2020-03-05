@@ -17,7 +17,7 @@ function sleepLength(word){
 var dictater= {
 
     musicDom: null, //播放器对象
-    aWords: [],        //歌曲目录，用数组来存储
+    aWords: [],        //播放目录，用数组来存储，格式：[['id', 'word', 'pinyin', 'voice'],...]
     announce: [],
     cur: 0,
     status: 0,     //0:未开始  1:开始   2：暂停    3：继续   4：结束    9:完毕

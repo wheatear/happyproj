@@ -19,7 +19,7 @@ $(function(){
         $.get('/dictation/makeVoice/', function(dic){
             // alert('get voice ok');
             aWords = dic.words;
-            // ['id', 'word', 'pinyin', 'voice']
+            // [['id', 'word', 'pinyin', 'voice'],...]
             // alert(aWords);
             announcer = dic.announcer;
             // alert(announcer[0]);
@@ -361,6 +361,10 @@ $(function(){
         // });
     }
 
+    function isEnglish(word){
+        return word.charCodeAt(0) < 256;
+    }
+
     // display length of word
     function dispLength(word){
         wl = word.length;
@@ -374,8 +378,15 @@ $(function(){
         return dl;
     }
 
-    function isEnglish(word){
-        return word.charCodeAt(0) < 256;
+    // play sleep interval
+    function sleepInterval(word){
+        wl = word.length;
+        if (isEnglish(word)){
+            dl = Math.ceil(wl/3) * 1000;
+        } else{
+            dl = 3000*wl;
+        }
+        return dl;
     }
 
     // display pinyin
@@ -397,6 +408,8 @@ $(function(){
         }
 
     }
+
+
 
 });
 
