@@ -17,8 +17,8 @@ function sleepLength(word){
 var dictater= {
 
     musicDom: null, //播放器对象
-    aWords: [],        //播放目录，用数组来存储，格式：[['id', 'word', 'pinyin', 'voice'],...]
-    announce: [],
+    aWords: [],        //播放列表，用数组来存储，格式：[['id', 'word', 'pinyin', 'voice'],...]
+    announce: [],      // 主持人语音列表，格式：[['id', 'word', 'pinyin', 'voice'],...] ；
     cur: 0,
     status: 0,     //0:未开始  1:开始   2：暂停    3：继续   4：结束    9:完毕
     t: null,
@@ -62,7 +62,7 @@ var dictater= {
         if (this.repeat == 0){
             this.setSrc(playWord);
             // this.dispWord(playWord);
-            this.onPrePlay(playWord);
+            if (this.onPrePlay) {this.onPrePlay(playWord);}
             this.repeat++;
         } else {
             this.repeat = 0;
@@ -74,6 +74,7 @@ var dictater= {
     },
 
     setSrc: function(playWord){
+        // playWord: ['id', 'word', 'pinyin', 'voice']
         this.musicDom.src = playWord[3];
     },
 
