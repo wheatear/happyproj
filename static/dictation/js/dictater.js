@@ -1,17 +1,17 @@
 
-function isEnglish(word){
-        return word.charCodeAt(0) < 256;
-}
-
-function sleepLength(word){
-        wl = word.length;
-        if (isEnglish(word)){
-            dl = Math.ceil(wl/3) * 1000;
-        } else{
-            dl = 3000*wl;
-        }
-        return dl;
-    }
+// function isEnglish(word){
+//         return word.charCodeAt(0) < 256;
+// }
+//
+// function sleepLength(word){
+//         wl = word.length;
+//         if (isEnglish(word)){
+//             dl = Math.ceil(wl/3) * 1000;
+//         } else{
+//             dl = 3000*wl;
+//         }
+//         return dl;
+//     }
 
 
 var dictater= {
@@ -26,6 +26,7 @@ var dictater= {
 
     // events
     onPrePlay: null,
+    setSleepInterval: null,
     onLoad: null,
     onComplete: null,
 
@@ -69,6 +70,11 @@ var dictater= {
             this.cur++;
         }
         this.playOne(playWord);
+        if(this.setSleepInterval) {
+            slpTime = this.setSleepInterval(playWord[1])
+        } else {
+            slpTime=3000*playWord[1].length;
+        }
         slpTime=sleepLength(playWord[1]);
         this.t = setTimeout("dictater.play()", slpTime)
     },

@@ -40,6 +40,7 @@ $(function(){
     player = dictater;
     player.init();
     player.onPrePlay = dispPinyin;
+    player.setSleepInterval = sleepInterval;
 
     hDisp = $('#dispWord');
     hPlay = $('#toPlay');
