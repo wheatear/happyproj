@@ -75,7 +75,7 @@ var dictater= {
         } else {
             slpTime=3000*playWord[1].length;
         }
-        slpTime=sleepLength(playWord[1]);
+        // slpTime=sleepLength(playWord[1]);
         this.t = setTimeout("dictater.play()", slpTime)
     },
 
